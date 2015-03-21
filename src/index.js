@@ -63,7 +63,7 @@ app.view = function () {
 		m('div.page-header', [
 			m('h1', vm.label + 's')
 		]),
-		m('table.table.table-striped.table-hover', [
+		(app.vm.posts().length ? m('table.table.table-striped.table-hover', [
 			m('thead', [
 				m('tr', [
 					listedFields.map(function (field) {
@@ -91,7 +91,7 @@ app.view = function () {
 					])
 				})
 			])
-		]),
+		]) : null),
 		m('form.form-horizontal', { onsubmit: app.vm.save }, [
 			m('fieldset', [
 				m('legend', 'New ' + vm.label.toLowerCase()),
