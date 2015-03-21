@@ -12,7 +12,14 @@ app.vm = {
 		event.preventDefault()
 		app.vm.posts().push(app.vm.toJSON())
 		app.vm.clear()
-		console.log(app.vm.posts())
+	},
+	edit: function (i, event) {
+		event.preventDefault()
+		alert('Not yet implemented.')
+	},
+	remove: function (i, event) {
+		event.preventDefault()
+		app.vm.posts().splice(i, 1)
 	},
 	clear: function () {
 		app.vm.fields.forEach(function (field) {
@@ -58,15 +65,30 @@ app.view = function () {
 		]),
 		m('table.table.table-striped.table-hover', [
 			m('thead', [
-				m('tr', listedFields.map(function (field) {
-					return m('th', field.config.label)
-				}))
+				m('tr', [
+					listedFields.map(function (field) {
+						return m('th', field.config.label)
+					}),
+					m('th[colspan="2"]')
+				])
 			]),
 			m('tbody', [
-				app.vm.posts().map(function (post) {
-					return m('tr', listedFields.map(function (field) {
-						return m('td', post[field.config.property])
-					}))
+				app.vm.posts().map(function (post, i) {
+					return m('tr', [
+						listedFields.map(function (field) {
+							return m('td', post[field.config.property])
+						}),
+						m('td', [
+							m('a[href="#"]', { onclick: app.vm.edit.bind(this, i) }, [
+								m('i.glyphicon.glyphicon-edit')
+							])
+						]),
+						m('td', [
+							m('a[href="#"]', { onclick: app.vm.remove.bind(this, i) }, [
+								m('i.glyphicon.glyphicon-trash')
+							])
+						])
+					])
 				})
 			])
 		]),
