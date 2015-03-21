@@ -7,9 +7,17 @@ app.controller = function () {
 }
 
 app.vm = {
+	posts: m.prop([]),
 	save: function (event) {
 		event.preventDefault()
-		console.log(app.vm.toJSON())
+		app.vm.posts().push(app.vm.toJSON())
+		app.vm.clear()
+		console.log(app.vm.posts())
+	},
+	clear: function () {
+		app.vm.fields.forEach(function (field) {
+			field.vm.clear()
+		})
 	},
 	toJSON: function () {
 		var data = {}
@@ -20,6 +28,7 @@ app.vm = {
 	},
 	init: function () {
 		var Post = require('./models/post')
+
 		var TextField = require('./fields/text')
 		var MarkdownField = require('./fields/markdown')
 
@@ -38,16 +47,36 @@ app.vm = {
 
 app.view = function () {
 	var vm = app.vm
+
 	return m('.container', [
+		m('div.page-header', [
+			m('h1', vm.label + 's')
+		]),
+		m('table.table.table-striped.table-hover', [
+			m('thead', [
+				m('tr', [
+					m('th', 'Title'),
+					m('th', 'Summary')
+				])
+			]),
+			m('tbody', [
+				app.vm.posts().map(function (post) {
+					return m('tr', [
+						m('td', post.title),
+						m('td', post.summary)
+					])
+				})
+			])
+		]),
 		m('form.form-horizontal', { onsubmit: app.vm.save }, [
 			m('fieldset', [
-				m('legend', vm.label),
+				m('legend', 'New ' + vm.label.toLowerCase()),
 				vm.fields.map(function (field) {
 					return field && field.view && field.view()
 				}),
 				m('div.form-group', [
-					m('div.col-sm-offset-2.col-sm-10', [
-						m('button.btn.btn-success', { type: 'submit' }, 'Save')
+					m('div.col-sm-offset-2.col-sm-4', [
+						m('button.btn.btn-success.btn-block', { type: 'submit' }, 'Save')
 					])
 				])
 			])

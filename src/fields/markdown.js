@@ -3,6 +3,9 @@ var m = require('mithril')
 module.exports = function (config) {
 	var vm = {
 		value: m.prop(''),
+		clear: function () {
+			vm.value('')
+		},
 		toJSON: function () {
 			return vm.value()
 		}
