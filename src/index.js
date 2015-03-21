@@ -92,15 +92,17 @@ app.view = function () {
 				})
 			])
 		]) : null),
-		m('form.form-horizontal', { onsubmit: app.vm.save }, [
-			m('fieldset', [
-				m('legend', 'New ' + vm.label.toLowerCase()),
-				vm.fields.map(function (field) {
-					return field && field.view && field.view()
-				}),
-				m('div.form-group', [
-					m('div.col-sm-offset-2.col-sm-4', [
-						m('button.btn.btn-success.btn-block', { type: 'submit' }, 'Save')
+		m('div.well', [
+			m('form.form-horizontal', { onsubmit: app.vm.save }, [
+				m('fieldset', [
+					m('legend', 'New ' + vm.label.toLowerCase()),
+					vm.fields.map(function (field) {
+						return field && field.view && field.view()
+					}),
+					m('div.form-group', [
+						m('div.col-sm-offset-2.col-sm-4', [
+							m('button.btn.btn-success.btn-block', { type: 'submit' }, 'Save')
+						])
 					])
 				])
 			])
