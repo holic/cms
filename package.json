@@ -1,0 +1,13 @@
+{
+  "private": true,
+  "name": "cms",
+  "scripts": {
+    "build": "browserify -e src/index.js -o public/app.js",
+    "dev": "watchify -d -e src/index.js -o public/app.js"
+  },
+  "dependencies": {
+    "browserify": "^9.0.3",
+    "mithril": "^0.1.30",
+    "watchify": "^2.4.0"
+  }
+}
