@@ -7,13 +7,15 @@ module.exports = {
 			label: 'Title',
 			property: 'title',
 			type: 'text',
-			required: true
+			required: true,
+			listed: true
 		},
 		{
 			label: 'Summary',
 			property: 'summary',
 			type: 'text',
-			required: true
+			required: true,
+			listed: true
 		},
 		{
 			label: 'Post body',

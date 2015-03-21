@@ -48,23 +48,25 @@ app.vm = {
 app.view = function () {
 	var vm = app.vm
 
+	var listedFields = app.vm.fields.filter(function (field) {
+		return field.config.listed
+	})
+
 	return m('.container', [
 		m('div.page-header', [
 			m('h1', vm.label + 's')
 		]),
 		m('table.table.table-striped.table-hover', [
 			m('thead', [
-				m('tr', [
-					m('th', 'Title'),
-					m('th', 'Summary')
-				])
+				m('tr', listedFields.map(function (field) {
+					return m('th', field.config.label)
+				}))
 			]),
 			m('tbody', [
 				app.vm.posts().map(function (post) {
-					return m('tr', [
-						m('td', post.title),
-						m('td', post.summary)
-					])
+					return m('tr', listedFields.map(function (field) {
+						return m('td', post[field.config.property])
+					}))
 				})
 			])
 		]),
