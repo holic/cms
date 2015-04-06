@@ -11,13 +11,28 @@ app.vm = {
 	active: m.prop(),
 	save: function (event) {
 		event.preventDefault()
-		if (app.vm.active() != null) {
-			// TODO: apply new data to existing object to avoid clearing out legacy data or custom meta data
-			app.vm.entries().splice(app.vm.active(), 1, app.vm.toJSON())
+
+		var index = app.vm.active()
+		var isNew = (index == null)
+		var data = app.vm.toJSON()
+
+		if (isNew) {
+			data.created_at = (new Date()).toISOString()
 		}
 		else {
-			app.vm.entries().push(app.vm.toJSON())
+			data.updated_at = (new Date()).toISOString()
 		}
+
+		if (isNew) {
+			app.vm.entries().push(data)
+		}
+		else {
+			var entry = app.vm.entries()[index]
+			Object.keys(data).forEach(function (key) {
+				entry[key] = data[key]
+			})
+		}
+
 		app.vm.clear()
 	},
 	edit: function (i, event) {
