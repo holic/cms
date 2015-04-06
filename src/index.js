@@ -1,4 +1,5 @@
 var m = require('mithril')
+var pluralize = require('pluralize')
 
 
 var app = {}
@@ -89,7 +90,7 @@ app.view = function () {
 
 	return m('.container', [
 		m('div.page-header', [
-			m('h1', vm.label + 's')
+			m('h1', pluralize(vm.label))
 		]),
 		(vm.entries().length ? m('table.table.table-striped.table-hover', [
 			m('thead', [

@@ -9,6 +9,7 @@
     "bootstrap": "^3.3.4",
     "browserify": "^9.0.3",
     "mithril": "^0.1.30",
+    "pluralize": "^1.1.2",
     "watchify": "^2.4.0"
   }
 }
