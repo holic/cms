@@ -8,6 +8,9 @@ module.exports = function (config) {
 		},
 		toJSON: function () {
 			return vm.value()
+		},
+		populate: function (data) {
+			vm.value(data)
 		}
 	}
 	var view = function () {
