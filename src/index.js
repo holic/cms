@@ -77,6 +77,8 @@ app.vm = {
 					return new MarkdownField(field)
 			}
 		})
+
+		this.entries(require('./fixtures/posts'))
 	}
 }
 
@@ -94,7 +96,6 @@ app.view = function () {
 		(vm.entries().length ? m('table.table.table-striped.table-hover', [
 			m('thead', [
 				m('tr', [
-					m('th', 'ID'),
 					listedFields.map(function (field) {
 						return m('th', field.config.label)
 					}),
@@ -104,7 +105,6 @@ app.view = function () {
 			m('tbody', [
 				vm.entries().map(function (post, i) {
 					return m('tr', { class: vm.active() === i ? 'warning' : null }, [
-						m('td', i + 1),
 						listedFields.map(function (field) {
 							return m('td', post[field.config.property])
 						}),
@@ -127,7 +127,7 @@ app.view = function () {
 				m('fieldset', [
 					m('legend', [
 						vm.active() != null
-							? m('button.btn.btn-xs.btn-danger.pull-right', { onclick: vm.clear }, 'Cancel')
+							? m('button.btn.btn-xs.btn-danger.pull-right', { type: 'button', onclick: vm.clear }, 'Cancel')
 							: null,
 						vm.active() != null
 							? ('Editing ' + vm.label.toLowerCase() + ' #' + (vm.active() + 1))
@@ -137,8 +137,8 @@ app.view = function () {
 						return field && field.view && field.view()
 					}),
 					m('div.form-group', [
-						m('div.col-sm-offset-2.col-sm-4', [
-							m('button.btn.btn-success.btn-block', { type: 'submit' }, 'Save')
+						m('div.col-sm-offset-2.col-sm-2', [
+							m('button.btn.btn-success.btn-lg', { type: 'submit' }, 'Save')
 						])
 					])
 				])

@@ -17,7 +17,7 @@ module.exports = function (config) {
 		return [
 			m('div.form-group', [
 				m('label.control-label.col-sm-2', config.label),
-				m('div.col-sm-4', [
+				m('div.col-sm-6', [
 					m('input.form-control', { type: config.type, value: vm.value(), oninput: m.withAttr('value', vm.value), required: config.required })
 				])
 			])

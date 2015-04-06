@@ -17,8 +17,8 @@ module.exports = function (config) {
 		return [
 			m('div.form-group', [
 				m('label.control-label.col-sm-2', config.label),
-				m('div.col-sm-4', [
-					m('textarea.form-control[rows=5]', { oninput: m.withAttr('value', vm.value), required: config.required }, vm.value())
+				m('div.col-sm-8', [
+					m('textarea.form-control[rows=12]', { oninput: m.withAttr('value', vm.value), required: config.required }, vm.value())
 				])
 			])
 		]
