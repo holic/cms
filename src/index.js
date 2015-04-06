@@ -7,10 +7,10 @@ app.controller = function () {
 }
 
 app.vm = {
-	posts: m.prop([]),
+	entries: m.prop([]),
 	save: function (event) {
 		event.preventDefault()
-		app.vm.posts().push(app.vm.toJSON())
+		app.vm.entries().push(app.vm.toJSON())
 		app.vm.clear()
 	},
 	edit: function (i, event) {
@@ -19,7 +19,7 @@ app.vm = {
 	},
 	remove: function (i, event) {
 		event.preventDefault()
-		app.vm.posts().splice(i, 1)
+		app.vm.entries().splice(i, 1)
 	},
 	clear: function () {
 		app.vm.fields.forEach(function (field) {
@@ -55,7 +55,7 @@ app.vm = {
 app.view = function () {
 	var vm = app.vm
 
-	var listedFields = app.vm.fields.filter(function (field) {
+	var listedFields = vm.fields.filter(function (field) {
 		return field.config.listed
 	})
 
@@ -63,7 +63,7 @@ app.view = function () {
 		m('div.page-header', [
 			m('h1', vm.label + 's')
 		]),
-		(app.vm.posts().length ? m('table.table.table-striped.table-hover', [
+		(vm.entries().length ? m('table.table.table-striped.table-hover', [
 			m('thead', [
 				m('tr', [
 					listedFields.map(function (field) {
@@ -73,18 +73,18 @@ app.view = function () {
 				])
 			]),
 			m('tbody', [
-				app.vm.posts().map(function (post, i) {
+				vm.entries().map(function (post, i) {
 					return m('tr', [
 						listedFields.map(function (field) {
 							return m('td', post[field.config.property])
 						}),
 						m('td', [
-							m('a[href="#"]', { onclick: app.vm.edit.bind(this, i) }, [
+							m('a[href="#"]', { onclick: vm.edit.bind(this, i) }, [
 								m('i.glyphicon.glyphicon-edit')
 							])
 						]),
 						m('td', [
-							m('a[href="#"]', { onclick: app.vm.remove.bind(this, i) }, [
+							m('a[href="#"]', { onclick: vm.remove.bind(this, i) }, [
 								m('i.glyphicon.glyphicon-trash')
 							])
 						])
@@ -93,7 +93,7 @@ app.view = function () {
 			])
 		]) : null),
 		m('div.well', [
-			m('form.form-horizontal', { onsubmit: app.vm.save }, [
+			m('form.form-horizontal', { onsubmit: vm.save }, [
 				m('fieldset', [
 					m('legend', 'New ' + vm.label.toLowerCase()),
 					vm.fields.map(function (field) {
@@ -106,7 +106,8 @@ app.view = function () {
 					])
 				])
 			])
-		])
+		]),
+		m('pre', JSON.stringify(vm.entries(), null, '  '))
 	])
 }
 
