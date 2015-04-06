@@ -125,9 +125,14 @@ app.view = function () {
 		m('div.well', [
 			m('form.form-horizontal', { onsubmit: vm.save }, [
 				m('fieldset', [
-					m('legend', vm.active() != null
-						? ('Editing ' + vm.label.toLowerCase() + ' #' + (vm.active() + 1))
-						: ('New ' + vm.label.toLowerCase())),
+					m('legend', [
+						vm.active() != null
+							? m('button.btn.btn-xs.btn-danger.pull-right', { onclick: vm.clear }, 'Cancel')
+							: null,
+						vm.active() != null
+							? ('Editing ' + vm.label.toLowerCase() + ' #' + (vm.active() + 1))
+							: ('New ' + vm.label.toLowerCase())
+					]),
 					vm.fields.map(function (field) {
 						return field && field.view && field.view()
 					}),
