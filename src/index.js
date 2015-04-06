@@ -12,24 +12,22 @@ app.vm = {
 	save: function (event) {
 		event.preventDefault()
 
-		var index = app.vm.active()
-		var isNew = (index == null)
+		var active = app.vm.active()
 		var data = app.vm.toJSON()
 
-		if (isNew) {
+		if (active == null) {
+			// new entry
 			data.created_at = (new Date()).toISOString()
-		}
-		else {
-			data.updated_at = (new Date()).toISOString()
-		}
-
-		if (isNew) {
 			app.vm.entries().push(data)
 		}
 		else {
-			var entry = app.vm.entries()[index]
+			// update existing entry
+			var entry = app.vm.entries()[active]
 			Object.keys(data).forEach(function (key) {
-				entry[key] = data[key]
+				if (entry[key] !== data[key]) {
+					entry[key] = data[key]
+					entry.updated_at = (new Date()).toISOString()
+				}
 			})
 		}
 
