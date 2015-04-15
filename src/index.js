@@ -1,15 +1,20 @@
-var m = require('mithril')
+var Vue = require('vue')
+var pluralize = require('pluralize')
 
-var layout = require('./layout')
-var list = require('./list')
-var edit = require('./edit')
-
-
-m.route.mode = 'hash'
-
-m.route(document.body, '/', {
-	'/': layout(list),
-	'/:type': list,
-	'/:type/new': edit,
-	'/:type/:id': edit
+new Vue({
+	el: document.body,
+	template: require('./container.html'),
+	components: {
+		nav: require('./components/nav')
+	},
+	filters: {
+		plural: function (value) {
+			return pluralize(value)
+		}
+	},
+	data: function () {
+		return {
+			view: null
+		}
+	}
 })
