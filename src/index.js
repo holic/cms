@@ -5,7 +5,8 @@ new Vue({
 	el: document.body,
 	template: require('./container.html'),
 	components: {
-		nav: require('./components/nav')
+		nav: require('./components/nav'),
+		entries: require('./components/entries')
 	},
 	filters: {
 		plural: function (value) {
@@ -13,8 +14,12 @@ new Vue({
 		}
 	},
 	data: function () {
+		var models = require('./models')
+
 		return {
-			view: null
+			view: 'entries',
+			models: models,
+			activeModel: models[0].property
 		}
 	}
 })

@@ -1,0 +1,15 @@
+<table class="table table-hover">
+	<thead>
+		<tr>
+			<th v-repeat="model.fields">{{ label }}</th>
+			<th colspan="2"></th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr v-repeat="entry : entries">
+			<td v-repeat="model.fields">{{ entry[property] }}</td>
+			<td></td>
+			<td></td>
+		</tr>
+	</tbody>
+</table>

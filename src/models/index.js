@@ -1,4 +1,4 @@
 module.exports = [
-	require('./author'),
-	require('./post')
+	require('./post'),
+	require('./author')
 ]

@@ -1,8 +1,4 @@
 module.exports = {
-	template: require('./nav.html'),
-	data: function () {
-		return {
-			models: require('../../models')
-		}
-	}
+	inherit: true,
+	template: require('./nav.html')
 }
