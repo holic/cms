@@ -14,6 +14,12 @@ module.exports = {
 
 			this.model = activeModel
 			this.entries = fixtures[active]
+		},
+		edit: function (event, id) {
+			event.preventDefault()
+			if (id) {
+				location.assign('#/' + this.activeModel + '/' + id)
+			}
 		}
 	},
 	data: function () {

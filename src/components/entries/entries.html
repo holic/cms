@@ -6,7 +6,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		<tr v-repeat="entry : entries">
+		<tr v-repeat="entry : entries" v-on="click: edit($event, entry.id)" class="clickable">
 			<td v-repeat="model.fields">{{ entry[property] }}</td>
 			<td></td>
 			<td></td>
