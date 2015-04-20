@@ -5,14 +5,6 @@ module.exports = {
 	template: require('./entries.html'),
 	methods: {
 		activateModel: function (active) {
-			var activeModel
-			this.models.forEach(function (model) {
-				if (model.property === active) {
-					activeModel = model
-				}
-			})
-
-			this.model = activeModel
 			this.entries = fixtures[active]
 		},
 		edit: function (event, id) {
@@ -24,7 +16,6 @@ module.exports = {
 	},
 	data: function () {
 		return {
-			model: null,
 			entries: null
 		}
 	},

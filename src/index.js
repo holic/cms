@@ -8,7 +8,8 @@ var app = new Vue({
 	template: require('./container.html'),
 	components: {
 		nav: require('./components/nav'),
-		entries: require('./components/entries')
+		entries: require('./components/entries'),
+		entry: require('./components/entry')
 	},
 	filters: {
 		plural: function (value) {
@@ -21,7 +22,9 @@ var app = new Vue({
 		return {
 			view: null,
 			models: models,
-			activeModel: null
+			activeModel: null,
+			model: null,
+			activeEntry: null
 		}
 	}
 })
@@ -34,15 +37,28 @@ router.on('/', function () {
 })
 
 router.on('/:type', function (type) {
-	var active
+	app.view = 'entries'
+	app.activeModel = null
+
 	app.models.forEach(function (model) {
 		if (type === model.property) {
-			active = type
+			app.activeModel = type
+			app.model = model
 		}
 	})
+})
 
-	app.view = 'entries'
-	app.activeModel = active
+router.on('/:type/:id', function (type, id) {
+	app.view = 'entry'
+	app.activeModel = null
+	app.activeEntry = id
+
+	app.models.forEach(function (model) {
+		if (type === model.property) {
+			app.activeModel = type
+			app.model = model
+		}
+	})
 })
 
 router.configure({
