@@ -1,15 +1,18 @@
-<table class="table table-hover" v-if="model">
-	<thead>
-		<tr>
-			<th v-repeat="model.fields">{{ label }}</th>
-			<th colspan="2"></th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr v-repeat="entry : entries" v-on="click: edit($event, entry.id)" class="clickable">
-			<td v-repeat="model.fields">{{ entry[property] }}</td>
-			<td></td>
-			<td></td>
-		</tr>
-	</tbody>
-</table>
+<template v-if="model">
+	<a href="#/{{ model.property }}/new" class="btn btn-success pull-right">Add new {{ model.label | lowercase }}</a>
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th v-repeat="model.fields">{{ label }}</th>
+				<th colspan="2"></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr v-repeat="entry : entries" v-on="click: edit($event, entry.id)" class="clickable">
+				<td v-repeat="model.fields">{{ entry[property] }}</td>
+				<td></td>
+				<td></td>
+			</tr>
+		</tbody>
+	</table>
+</template>

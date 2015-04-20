@@ -42,6 +42,7 @@ router.on('/', function () {
 router.on('/:type', function (type) {
 	app.view = 'entries'
 	app.activeModel = null
+	app.model = null
 
 	app.models.forEach(function (model) {
 		if (type === model.property) {
@@ -54,7 +55,9 @@ router.on('/:type', function (type) {
 router.on('/:type/:id', function (type, id) {
 	app.view = 'entry'
 	app.activeModel = null
+	app.model = null
 	app.activeEntry = null
+	app.entry = null
 
 	app.models.forEach(function (model) {
 		if (type === model.property) {
