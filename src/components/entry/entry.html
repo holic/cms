@@ -1,0 +1,11 @@
+<form v-on="submit: save($event)" class="form-horizontal">
+	<fieldset>
+		<legend>Editing {{ model.label | lowercase }}</legend>
+		<div v-repeat="model.fields" v-component="{{ componentFor(type) }}"></div>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-2">
+				<button class="btn btn-success btn-lg" type="submit">Save</button>
+			</div>
+		</div>
+	</fieldset>
+</form>
