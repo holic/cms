@@ -1,19 +1,27 @@
-<form v-if="isReady" v-on="submit: save($event)" class="form-horizontal">
-	<fieldset>
-		<legend v-if="isNew">
-			New {{ model.label | lowercase }}
-		</legend>
-		<legend v-if="!isNew">
-			Edit {{ model.label | lowercase }}
-			<small class="text-muted pull-right">{{ activeEntry }}</small>
-		</legend>
+<template v-if="isReady">
+	<form v-on="submit: save($event)" class="form-horizontal">
+		<fieldset>
+			<legend v-if="isNew">
+				New {{ model.label | lowercase }}
+			</legend>
+			<legend v-if="!isNew">
+				Edit {{ model.label | lowercase }}
+				<small class="text-muted pull-right">{{ activeEntry }}</small>
+			</legend>
 
-		<div v-repeat="model.fields" v-component="{{ componentFor(type) }}"></div>
-		<div class="form-group">
-			<div class="col-sm-offset-2 col-sm-2">
-				<button class="btn btn-success btn-lg" type="submit">Save</button>
+			<div v-repeat="model.fields" v-component="{{ componentFor(type) }}"></div>
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-2">
+					<button class="btn btn-success btn-lg" type="submit">Save</button>
+				</div>
 			</div>
-		</div>
-	</fieldset>
-</form>
+		</fieldset>
+	</form>
+	<p class="text-right" v-if="!isNew">
+		<button v-on="click: remove($event)" type="button" class="btn btn-link">
+			Delete this {{ model.label | lowercase }}?
+		</button>
+	</p>
+</template>
+
 <em v-if="!isReady" class="text-muted">Loading {{ model.label | lowercase }}&hellip;</em>

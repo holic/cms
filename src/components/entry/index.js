@@ -54,6 +54,23 @@ module.exports = {
 			else {
 				ref.child(this.activeEntry).update(this.entry, done)
 			}
+		},
+		remove: function (event) {
+			event.preventDefault()
+
+			// TODO: add undo
+			if (!window.confirm('This cannot be undone. Continue?')) {
+				return
+			}
+
+			dataRef.child(this.activeModel).child(this.activeEntry).remove(function (err) {
+				if (err) {
+					console.error('Could not remove:', err)
+				}
+				else {
+					location.assign('#/' + this.activeModel)
+				}
+			}.bind(this))
 		}
 	},
 	data: function () {
