@@ -25,6 +25,10 @@ module.exports = {
 			dataRef.child(this.activeModel).child(id).once('value', function (snapshot) {
 				this.entry = snapshot.val()
 			}.bind(this))
+		},
+		save: function (event) {
+			event.preventDefault()
+			console.log(JSON.stringify(this.entry))
 		}
 	},
 	data: function () {
