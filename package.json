@@ -7,11 +7,11 @@
   },
   "dependencies": {
     "bootstrap": "^3.3.4",
-    "browserify": "^9.0.7",
+    "browserify": "^9.0.8",
     "director": "^1.2.8",
     "partialify": "^3.1.3",
     "pluralize": "^1.1.2",
-    "vue": "^0.11.5",
-    "watchify": "^3.1.0"
+    "vue": "^0.11.8",
+    "watchify": "^3.1.2"
   }
 }
