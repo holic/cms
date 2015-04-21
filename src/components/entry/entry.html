@@ -1,11 +1,11 @@
-<form v-on="submit: save($event)" class="form-horizontal">
+<form v-if="isReady" v-on="submit: save($event)" class="form-horizontal">
 	<fieldset>
-		<legend v-if="entry">
-			Edit {{ model.label | lowercase }}
-			<small class="text-muted pull-right">{{ entry.id }}</small>
-		</legend>
-		<legend v-if="!entry">
+		<legend v-if="isNew">
 			New {{ model.label | lowercase }}
+		</legend>
+		<legend v-if="!isNew">
+			Edit {{ model.label | lowercase }}
+			<small class="text-muted pull-right">{{ activeEntry }}</small>
 		</legend>
 
 		<div v-repeat="model.fields" v-component="{{ componentFor(type) }}"></div>
@@ -16,3 +16,4 @@
 		</div>
 	</fieldset>
 </form>
+<em v-if="!isReady" class="text-muted">Loading {{ model.label | lowercase }}&hellip;</em>

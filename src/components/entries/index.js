@@ -1,11 +1,16 @@
-var fixtures = require('../../fixtures')
+var Firebase = require('firebase')
+
+var dataRef = new Firebase('https://entries.firebaseIO.com/data/')
 
 module.exports = {
 	inherit: true,
 	template: require('./entries.html'),
 	methods: {
-		activateModel: function (active) {
-			this.entries = fixtures[active]
+		activateModel: function (model) {
+			this.entries = null
+			dataRef.child(model).once('value', function (snapshot) {
+				this.entries = snapshot.val()
+			}.bind(this))
 		},
 		edit: function (event, id) {
 			event.preventDefault()

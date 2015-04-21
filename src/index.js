@@ -2,9 +2,6 @@ var Vue = require('vue')
 var director = require('director')
 var pluralize = require('pluralize')
 
-var fixtures = require('./fixtures')
-
-
 var app = new Vue({
 	el: document.body,
 	template: require('./container.html'),
@@ -56,20 +53,12 @@ router.on('/:type/:id', function (type, id) {
 	app.view = 'entry'
 	app.activeModel = null
 	app.model = null
-	app.activeEntry = null
-	app.entry = null
+	app.activeEntry = id
 
 	app.models.forEach(function (model) {
 		if (type === model.property) {
 			app.activeModel = type
 			app.model = model
-		}
-	})
-
-	fixtures[type] && fixtures[type].forEach(function (entry) {
-		if (id === entry.id) {
-			app.activeEntry = id
-			app.entry = entry
 		}
 	})
 })
