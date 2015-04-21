@@ -2,6 +2,15 @@ var Firebase = require('firebase')
 
 var dataRef = new Firebase('https://entries.firebaseIO.com/data/')
 
+function isEmpty (o) {
+	for (var p in o) {
+		if (o.hasOwnProperty(p)) {
+			return false
+		}
+	}
+	return true
+}
+
 module.exports = {
 	inherit: true,
 	template: require('./entry.html'),
@@ -19,7 +28,7 @@ module.exports = {
 			}
 		},
 		loadEntry: function (id) {
-			this.entry = null
+			this.entry = {}
 			if (id === 'new') return
 
 			dataRef.child(this.activeModel).child(id).once('value', function (snapshot) {
@@ -28,12 +37,28 @@ module.exports = {
 		},
 		save: function (event) {
 			event.preventDefault()
-			console.log(JSON.stringify(this.entry))
+
+			var done = (function (err) {
+				if (err) {
+					console.error('Could not save:', err)
+				}
+				else {
+					location.assign('#/' + this.activeModel)
+				}
+			}).bind(this)
+
+			var ref = dataRef.child(this.activeModel)
+			if (this.isNew) {
+				ref.push(this.entry, done)
+			}
+			else {
+				ref.child(this.activeEntry).update(this.entry, done)
+			}
 		}
 	},
 	data: function () {
 		return {
-			entry: null
+			entry: {}
 		}
 	},
 	computed: {
@@ -41,7 +66,7 @@ module.exports = {
 			return this.activeEntry === 'new'
 		},
 		isReady: function () {
-			return this.entry || this.isNew
+			return !isEmpty(this.entry) || this.isNew
 		}
 	},
 	created: function () {
