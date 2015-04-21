@@ -4,19 +4,16 @@
 		<thead>
 			<tr>
 				<th v-repeat="model.fields">{{ label }}</th>
-				<th colspan="2"></th>
 			</tr>
 		</thead>
 		<tbody v-if="entries">
 			<tr v-repeat="entry : entries" v-on="click: edit($event, $key)" data-id="{{ $key }}" class="clickable">
 				<td v-repeat="model.fields">{{ entry[property] }}</td>
-				<td></td>
-				<td></td>
 			</tr>
 		</tbody>
 		<tbody v-if="!entries">
 			<tr>
-				<td colspan="{{ model.fields.length + 2 }}">
+				<td colspan="{{ model.fields.length }}">
 					<em class="text-muted">Loading {{ model.label | lowercase | plural }}&hellip;</em>
 				</td>
 			</tr>
