@@ -2,6 +2,9 @@ var Vue = require('vue')
 var director = require('director')
 var pluralize = require('pluralize')
 
+var models = require('./models')
+
+
 var app = new Vue({
 	el: document.body,
 	template: require('./container.html'),
@@ -16,8 +19,6 @@ var app = new Vue({
 		}
 	},
 	data: function () {
-		var models = require('./models')
-
 		return {
 			view: null,
 			models: models,
@@ -38,29 +39,15 @@ router.on('/', function () {
 
 router.on('/:type', function (type) {
 	app.view = 'entries'
-	app.activeModel = null
-	app.model = null
-
-	app.models.forEach(function (model) {
-		if (type === model.property) {
-			app.activeModel = type
-			app.model = model
-		}
-	})
+	app.model = models[type]
+	app.activeModel = app.model ? type : null
 })
 
 router.on('/:type/:id', function (type, id) {
 	app.view = 'entry'
-	app.activeModel = null
-	app.model = null
+	app.model = models[type]
+	app.activeModel = app.model ? type : null
 	app.activeEntry = id
-
-	app.models.forEach(function (model) {
-		if (type === model.property) {
-			app.activeModel = type
-			app.model = model
-		}
-	})
 })
 
 router.configure({
