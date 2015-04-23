@@ -24,6 +24,13 @@ module.exports = {
 			entries: null
 		}
 	},
+	computed: {
+		fields: function () {
+			return this.model.fields.filter(function (filter) {
+				return filter.listed
+			})
+		}
+	},
 	created: function () {
 		if (this.activeModel) {
 			this.activateModel(this.activeModel)
