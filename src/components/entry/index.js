@@ -16,13 +16,18 @@ module.exports = {
 	template: require('./entry.html'),
 	components: {
 		textField: require('../fields/text'),
-		markdownField: require('../fields/markdown')
+		markdownField: require('../fields/markdown'),
+		entryField: require('../fields/entry')
 	},
 	methods: {
 		componentFor: function (type) {
 			switch (type) {
+				case 'text':
+					return 'textField'
 				case 'markdown':
 					return 'markdownField'
+				case 'entry':
+					return 'entryField'
 				default:
 					return 'textField'
 			}
