@@ -24,13 +24,11 @@ module.exports = {
 					this.entry[this.property] = value
 				}
 			}
-		},
-		isReady: function () {
-			return (this.options != null)
 		}
 	},
 	created: function () {
 		var model = models[this.model]
+
 		dataRef.child(model.property).once('value', function (snapshot) {
 			// TODO: figure out better "unselected" option
 			//       ideally allow the disabled attribute in here
