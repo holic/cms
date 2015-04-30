@@ -14,6 +14,14 @@ module.exports = {
 					this.entry[this.property] = value
 				}
 			}
+		},
+		inputType: function () {
+			switch (this.type) {
+				case 'text':
+				case 'email':
+					return this.type
+			}
+			return 'text'
 		}
 	}
 }
