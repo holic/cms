@@ -34,7 +34,10 @@ var app = new Vue({
 var router = new director.Router()
 
 router.on('/', function () {
-	location.replace('#/' + app.models[0].property)
+	for (var k in models) {
+		location.replace('#/' + models[k].property)
+		return
+	}
 })
 
 router.on('/:type', function (type) {
