@@ -25,6 +25,11 @@ module.exports = {
 			listed: true
 		},
 		{
+			label: 'Header image',
+			property: 'header_image',
+			type: 'image'
+		},
+		{
 			label: 'Post body',
 			property: 'body',
 			type: 'markdown',
