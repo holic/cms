@@ -2,26 +2,24 @@ module.exports = {
 	inherit: true,
 	replace: true,
 	template: require('./image.html'),
-	data: function () {
-		return {
-			image: null
-		}
-	},
 	computed: {
 		value: {
 			get: function () {
-				if (this.entry) {
+				if (this.entry && this.property) {
 					return this.entry[this.property]
 				}
 			},
 			set: function (value) {
-				if (this.entry) {
-					this.entry[this.property] = value
+				if (this.entry && this.property) {
+					// One caveat here is that once the observation has been initiated,
+					// Vue.js will not be able to detect newly added or deleted properties.
+					// To get around that, observed objects are augmented with $add and $delete methods.
+					this.entry.$add(this.property, value)
 				}
 			}
 		},
 		thumbnail: function () {
-			return this.image + '-/resize/300/'
+			return this.value + '-/resize/300/'
 		}
 	},
 	methods: {
@@ -39,16 +37,8 @@ module.exports = {
 					console.log('file data:', fileInfo)
 
 					vm.value = fileInfo.originalUrl
-
-					// need to set this on the vm itself because
-					// the DOM didn't want to update with the
-					// computed property
-					vm.image = vm.value
 				})
 			})
 		}
-	},
-	ready: function () {
-		this.image = this.value
 	}
 }
