@@ -15,6 +15,9 @@ module.exports = {
 					if (value == null) {
 						this.entry.$delete(this.property)
 					}
+					else if (this.entry.hasOwnProperty(this.property)) {
+						this.entry[this.property] = value
+					}
 					else {
 						this.entry.$add(this.property, value)
 					}
