@@ -1,32 +1,15 @@
 var Firebase = require('firebase')
 
+var valueToProperty = require('../valueToProperty')
 var models = require('../../../models')
 var dataRef = new Firebase('https://entries.firebaseIO.com/data/')
 
 module.exports = {
-	inherit: true,
-	replace: true,
+	mixins: [valueToProperty],
 	template: require('./entry.html'),
 	data: function () {
 		return {
 			options: null
-		}
-	},
-	computed: {
-		value: {
-			get: function () {
-				if (this.entry && this.property) {
-					return this.entry[this.property]
-				}
-			},
-			set: function (value) {
-				if (this.entry && this.property) {
-					// One caveat here is that once the observation has been initiated,
-					// Vue.js will not be able to detect newly added or deleted properties.
-					// To get around that, observed objects are augmented with $add and $delete methods.
-					this.entry.$add(this.property, value)
-				}
-			}
 		}
 	},
 	created: function () {
