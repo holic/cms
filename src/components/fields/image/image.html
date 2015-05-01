@@ -1,6 +1,6 @@
 <div class="form-group">
 	<div class="col-sm-offset-2 col-sm-6">
-		<button class="btn btn-primary" v-if="!value" v-on="click: click">Upload {{ label | lowercase }}</button>
+		<button type="button" class="btn btn-primary" v-if="!value" v-on="click: click">Upload {{ label | lowercase }}</button>
 		<img class="img-thumbnail clickable" v-if="value" v-attr="src: thumbnail" v-on="click: click">
 	</div>
 </div>
