@@ -1,6 +1,6 @@
 <div class="form-group">
-	<label class="control-label col-sm-2">{{ label }}</label>
-	<div class="col-sm-6">
-		<input class="form-control-static" type="file" v-model="value" v-attr="required: required">
+	<div class="col-sm-offset-2 col-sm-6">
+		<button class="btn btn-primary" v-if="!image" v-on="click: click">Upload {{ label | lowercase }}</button>
+		<img class="img-thumbnail clickable" v-if="image" v-attr="src: thumbnail" v-on="click: click">
 	</div>
 </div>

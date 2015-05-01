@@ -18,13 +18,6 @@ module.exports = {
 			listed: true
 		},
 		{
-			label: 'Summary',
-			property: 'summary',
-			type: 'text',
-			required: true,
-			listed: true
-		},
-		{
 			label: 'Header image',
 			property: 'header_image',
 			type: 'image'
