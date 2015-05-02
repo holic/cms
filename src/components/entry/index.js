@@ -36,31 +36,42 @@ module.exports = {
 			}
 		},
 		loadEntry: function (id) {
-			this.entry = {}
+			var vm = this
+
+			vm.entry = {}
 			if (id === 'new') return
 
-			dataRef.child(this.activeModel).child(id).once('value', function (snapshot) {
-				this.entry = snapshot.val()
-			}.bind(this))
+			dataRef.child(vm.activeModel).child(id).once('value', function (snapshot) {
+				vm.entry = snapshot.val()
+
+				// dirty checking
+				var unwatch = vm.$watch('entry', function () {
+					vm.entryHasChanges = true
+					unwatch()
+				}, true)
+			})
 		},
 		save: function (event) {
 			event.preventDefault()
+
+			var vm = this
 
 			var done = (function (err) {
 				if (err) {
 					console.error('Could not save:', err)
 				}
 				else {
-					location.assign('#/' + this.activeModel)
+					vm.entryHasChanges = false
+					location.assign('#/' + vm.activeModel)
 				}
-			}).bind(this)
+			})
 
-			var ref = dataRef.child(this.activeModel)
-			if (this.isNew) {
-				ref.push(this.entry, done)
+			var ref = dataRef.child(vm.activeModel)
+			if (vm.isNew) {
+				ref.push(vm.entry, done)
 			}
 			else {
-				ref.child(this.activeEntry).update(this.entry, done)
+				ref.child(vm.activeEntry).update(vm.entry, done)
 			}
 		},
 		remove: function (event) {
@@ -83,7 +94,8 @@ module.exports = {
 	},
 	data: function () {
 		return {
-			entry: {}
+			entry: {},
+			entryHasChanges: false
 		}
 	},
 	computed: {
@@ -98,6 +110,17 @@ module.exports = {
 		if (this.activeEntry) {
 			this.loadEntry(this.activeEntry)
 		}
+	},
+	attached: function () {
+		var vm = this
+		// TODO: make this work for back button (push state)
+		window.addEventListener('beforeunload', function (event) {
+			if (vm.entryHasChanges) {
+				var confirm = 'You have unsaved changes.\nLeaving this page will discard these changes.'
+
+				return (event || window.event).returnValue = confirm
+			}
+		}, false)
 	},
 	watch: {
 		activeEntry: function (id) {
