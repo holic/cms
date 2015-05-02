@@ -46,7 +46,7 @@ module.exports = {
 
 				// dirty checking
 				var unwatch = vm.$watch('entry', function () {
-					vm.entryHasChanges = true
+					vm.hasChanged = true
 					unwatch()
 				}, true)
 			})
@@ -61,10 +61,13 @@ module.exports = {
 					console.error('Could not save:', err)
 				}
 				else {
-					vm.entryHasChanges = false
+					vm.hasChanged = false
 					location.assign('#/' + vm.activeModel)
 				}
 			})
+
+			// skip save when nothing has changed
+			if (!vm.hasChanged) return done()
 
 			var ref = dataRef.child(vm.activeModel)
 			if (vm.isNew) {
@@ -95,7 +98,7 @@ module.exports = {
 	data: function () {
 		return {
 			entry: {},
-			entryHasChanges: false
+			hasChanged: false
 		}
 	},
 	computed: {
@@ -115,7 +118,7 @@ module.exports = {
 		var vm = this
 		// TODO: make this work for back button (push state)
 		window.addEventListener('beforeunload', function (event) {
-			if (vm.entryHasChanges) {
+			if (vm.hasChanged) {
 				var confirm = 'You have unsaved changes.\nLeaving this page will discard these changes.'
 
 				return (event || window.event).returnValue = confirm
