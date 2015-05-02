@@ -4,18 +4,18 @@ module.exports = {
 	type: 'collection',
 	fields: [
 		{
-			label: 'Author',
-			property: 'author',
-			type: 'entry',
-			model: 'authors',
-			required: true
-		},
-		{
 			label: 'Title',
 			property: 'title',
 			type: 'text',
 			required: true,
 			listed: true
+		},
+		{
+			label: 'Author',
+			property: 'author',
+			type: 'entry',
+			model: 'authors',
+			required: true
 		},
 		{
 			label: 'Header image',

@@ -9,7 +9,7 @@ module.exports = {
 		}
 	},
 	methods: {
-		click: function (event) {
+		upload: function (event) {
 			event.preventDefault()
 
 			var vm = this
@@ -25,6 +25,10 @@ module.exports = {
 					vm.value = fileInfo.originalUrl
 				})
 			})
+		},
+		remove: function (event) {
+			event.preventDefault()
+			this.value = null
 		}
 	}
 }
