@@ -10,12 +10,9 @@ module.exports = {
 			},
 			set: function (value) {
 				if (this.entry && this.property) {
-					// We use $add/$delete here because once a property has been observed,
+					// We use $add here because once a property has been observed,
 					// Vue cannot detect newly added/deleted properties.
-					if (value == null) {
-						this.entry.$delete(this.property)
-					}
-					else if (this.entry.hasOwnProperty(this.property)) {
+					if (this.entry.hasOwnProperty(this.property)) {
 						this.entry[this.property] = value
 					}
 					else {
