@@ -10,8 +10,8 @@ var app = new Vue({
 	template: require('./container.html'),
 	components: {
 		nav: require('./components/nav'),
-		entries: require('./components/entries'),
-		entry: require('./components/entry')
+		entriesView: require('./views/entries'),
+		entryView: require('./views/entry')
 	},
 	filters: {
 		plural: function (value) {
@@ -41,13 +41,13 @@ router.on('/', function () {
 })
 
 router.on('/:type', function (type) {
-	app.view = 'entries'
+	app.view = 'entriesView'
 	app.model = models[type]
 	app.activeModel = app.model ? type : null
 })
 
 router.on('/:type/:id', function (type, id) {
-	app.view = 'entry'
+	app.view = 'entryView'
 	app.model = models[type]
 	app.activeModel = app.model ? type : null
 	app.activeEntry = id

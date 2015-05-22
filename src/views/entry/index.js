@@ -15,10 +15,10 @@ module.exports = {
 	inherit: true,
 	template: require('./entry.html'),
 	components: {
-		textField: require('../fields/text'),
-		markdownField: require('../fields/markdown'),
-		entryField: require('../fields/entry'),
-		imageField: require('../fields/image')
+		textField: require('../../components/fields/text'),
+		markdownField: require('../../components/fields/markdown'),
+		entryField: require('../../components/fields/entry'),
+		imageField: require('../../components/fields/image')
 	},
 	methods: {
 		componentFor: function (type) {
