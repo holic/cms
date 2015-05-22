@@ -1,4 +1,4 @@
 module.exports = {
 	replace: true,
-	paramAttributes: ['field', 'entry']
+	props: ['field', 'entry']
 }
