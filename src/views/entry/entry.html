@@ -10,7 +10,7 @@
 			</legend>
 
 			<template v-repeat="field: model.fields">
-				<component type="{{ componentFor(field.type) }}" field="{{ field }}" entry="{{ entry }}"></component>
+				<component is="{{ componentFor(field.type) }}" field="{{ field }}" entry="{{ entry }}"></component>
 			</template>
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-2">
