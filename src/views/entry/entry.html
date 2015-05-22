@@ -9,7 +9,9 @@
 				<small class="text-muted pull-right">{{ activeEntry }}</small>
 			</legend>
 
-			<div v-repeat="model.fields" v-component="{{ componentFor(type) }}"></div>
+			<template v-repeat="field: model.fields">
+				<div v-component="{{ componentFor(field.type) }}" field="{{ field }}" entry="{{ entry }}"></div>
+			</template>
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-2">
 					<button class="btn btn-success btn-lg" type="submit">Save</button>

@@ -1,19 +1,20 @@
 var Firebase = require('firebase')
 
+var field = require('../field')
 var valueToProperty = require('../valueToProperty')
 var models = require('../../../models')
 var dataRef = new Firebase('https://entries.firebaseIO.com/data/')
 
 module.exports = {
-	mixins: [valueToProperty],
+	mixins: [field, valueToProperty],
 	template: require('./entry.html'),
 	data: function () {
 		return {
 			options: null
 		}
 	},
-	created: function () {
-		var model = models[this.model]
+	compiled: function () {
+		var model = models[this.field.model]
 
 		dataRef.child(model.property).once('value', function (snapshot) {
 			// TODO: figure out better "unselected" option
