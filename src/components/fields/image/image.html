@@ -1,10 +1,10 @@
 <div class="form-group">
 	<div class="col-sm-offset-2 col-sm-6">
 		<em class="text-muted" v-if="uploading">Uploading&hellip;</em>
-		<button type="button" class="btn btn-primary" v-if="!value && !uploading" v-on="click: upload">Upload {{ label | lowercase }}</button>
+		<button type="button" class="btn btn-primary" v-if="!value && !uploading" v-on="click: upload">Upload {{ field.label | lowercase }}</button>
 		<template v-if="value && !uploading">
 			<img class="img-thumbnail clickable" v-attr="src: thumbnail" v-on="click: upload">
-			<button type="button" class="btn btn-xs btn-default" v-on="click: remove">Remove</button>
+			<button type="button" class="btn btn-xs btn-default" v-on="click: remove">Remove {{ field.label | lowercase }}</button>
 		</template>
 	</div>
 </div>

@@ -1,6 +1,6 @@
 <div class="form-group">
-	<label class="control-label col-sm-2">{{ label }}</label>
+	<label class="control-label col-sm-2">{{ field.label }}</label>
 	<div class="col-sm-6">
-		<input class="form-control" v-model="value" v-attr="type: inputType, required: required">
+		<input class="form-control" v-model="value" v-attr="type: inputType, required: field.required">
 	</div>
 </div>
