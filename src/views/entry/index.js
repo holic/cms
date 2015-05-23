@@ -1,15 +1,7 @@
 var Firebase = require('firebase')
+var models = require('../../models')
 
 var dataRef = new Firebase('https://entries.firebaseIO.com/data/')
-
-function isEmpty (o) {
-	for (var p in o) {
-		if (o.hasOwnProperty(p)) {
-			return false
-		}
-	}
-	return true
-}
 
 module.exports = {
 	inherit: true,
@@ -35,22 +27,6 @@ module.exports = {
 					return 'textField'
 			}
 		},
-		loadEntry: function (id) {
-			var vm = this
-
-			vm.entry = {}
-			if (id === 'new') return
-
-			dataRef.child(vm.activeModel).child(id).once('value', function (snapshot) {
-				vm.entry = snapshot.val()
-
-				// dirty checking
-				var unwatch = vm.$watch('entry', function () {
-					vm.hasChanged = true
-					unwatch()
-				}, true)
-			})
-		},
 		save: function (event) {
 			event.preventDefault()
 
@@ -61,20 +37,19 @@ module.exports = {
 					console.error('Could not save:', err)
 				}
 				else {
-					vm.hasChanged = false
-					location.assign('#/' + vm.activeModel)
+					vm.$set('hasChanged', false)
+					location.assign('#/' + vm.model.property)
 				}
 			})
 
 			// skip save when nothing has changed
 			if (!vm.hasChanged) return done()
 
-			var ref = dataRef.child(vm.activeModel)
 			if (vm.isNew) {
-				ref.push(vm.entry, done)
+				vm.entriesRef.push(vm.entry, done)
 			}
 			else {
-				ref.child(vm.activeEntry).update(vm.entry, done)
+				vm.entryRef.update(vm.entry, done)
 			}
 		},
 		remove: function (event) {
@@ -85,34 +60,52 @@ module.exports = {
 				return
 			}
 
-			dataRef.child(this.activeModel).child(this.activeEntry).remove(function (err) {
+			this.entryRef.remove(function (err) {
 				if (err) {
 					console.error('Could not remove:', err)
 				}
 				else {
-					location.assign('#/' + this.activeModel)
+					location.assign('#/' + this.model.property)
 				}
 			}.bind(this))
 		}
 	},
-	data: function () {
-		return {
-			entry: {},
-			hasChanged: false
-		}
-	},
 	computed: {
-		isNew: function () {
-			return this.activeEntry === 'new'
+		model: function () {
+			return models[this.route.params.model]
 		},
-		isReady: function () {
-			return !isEmpty(this.entry) || this.isNew
+		id: function () {
+			return this.route.params.id
+		},
+		entriesRef: function () {
+			return dataRef.child(this.model.property)
+		},
+		entryRef: function () {
+			return this.entriesRef.child(this.id)
+		},
+		isNew: function () {
+			return this.id === 'new'
 		}
 	},
 	created: function () {
-		if (this.activeEntry) {
-			this.loadEntry(this.activeEntry)
+		var vm = this
+
+		function set (entry) {
+			vm.$set('entry', entry)
+			var unwatch = vm.$watch('entry', function () {
+				vm.$set('hasChanged', true)
+				unwatch()
+			}, true)
 		}
+
+		if (vm.isNew) {
+			set({})
+			return
+		}
+
+		vm.entryRef.once('value', function (snapshot) {
+			set(snapshot.val())
+		})
 	},
 	attached: function () {
 		var vm = this
@@ -124,10 +117,5 @@ module.exports = {
 				return (event || window.event).returnValue = confirm
 			}
 		}, false)
-	},
-	watch: {
-		activeEntry: function (id) {
-			this.loadEntry(id)
-		}
 	}
 }

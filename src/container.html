@@ -3,10 +3,10 @@
 		<div class="col-sm-2">
 			<input type="text" class="form-control" placeholder="Find content&hellip;">
 			<hr>
-			<nav></nav>
+			<nav models="{{ models }}" model="{{ route.params.model }}"></nav>
 		</div>
 		<div class="col-sm-10">
-			<component is="{{ view }}"></component>
+			<router-view></router-view>
 		</div>
 	</div>
 </div>

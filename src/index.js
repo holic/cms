@@ -1,17 +1,19 @@
 var Vue = require('vue')
-var director = require('director')
+var Router = require('vue-router')
 var pluralize = require('pluralize')
 
 var models = require('./models')
 
 
+Vue.use(Router)
+
+
 var app = new Vue({
-	el: document.body,
 	template: require('./container.html'),
 	components: {
 		nav: require('./components/nav'),
-		entriesView: require('./views/entries'),
-		entryView: require('./views/entry')
+		'view-entries': require('./views/entries'),
+		'view-entry': require('./views/entry')
 	},
 	filters: {
 		plural: function (value) {
@@ -21,42 +23,60 @@ var app = new Vue({
 	data: function () {
 		return {
 			view: null,
-			models: models,
 			activeModel: null,
 			model: null,
 			activeEntry: null,
 			entry: null
 		}
+	},
+	computed: {
+		models: function () {
+			return models
+		}
 	}
 })
 
 
-var router = new director.Router()
+var router = new Router({ hashbang: false })
 
-router.on('/', function () {
-	for (var k in models) {
-		location.replace('#/' + models[k].property)
-		return
+router.map({
+	'/:model': {
+		component: 'view-entries'
+	},
+	'/:model/:id': {
+		component: 'view-entry'
 	}
 })
 
-router.on('/:type', function (type) {
-	app.view = 'entriesView'
-	app.model = models[type]
-	app.activeModel = app.model ? type : null
+router.redirect({
+	'/': '/' + models[Object.keys(models)[0]].property
 })
 
-router.on('/:type/:id', function (type, id) {
-	app.view = 'entryView'
-	app.model = models[type]
-	app.activeModel = app.model ? type : null
-	app.activeEntry = id
-})
+// router.on('/', function () {
+// 	for (var k in models) {
+// 		location.replace('#/' + models[k].property)
+// 		return
+// 	}
+// })
 
-router.configure({
-	notfound: function () {
-		console.log('No route found for path:', this.path)
-	}
-})
+// router.on('/:type', function (type) {
+// 	app.view = 'entriesView'
+// 	app.model = models[type]
+// 	app.activeModel = app.model ? type : null
+// })
 
-router.init('/')
+// router.on('/:type/:id', function (type, id) {
+// 	app.view = 'entryView'
+// 	app.model = models[type]
+// 	app.activeModel = app.model ? type : null
+// 	app.activeEntry = id
+// })
+
+// router.configure({
+// 	notfound: function () {
+// 		console.log('No route found for path:', this.path)
+// 	}
+// })
+
+router.start(app)
+app.$mount(document.body)

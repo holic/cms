@@ -1,4 +1,4 @@
-<template v-if="isReady">
+<template v-if="entry">
 	<form v-on="submit: save($event)" class="form-horizontal">
 		<fieldset>
 			<legend v-if="isNew">
@@ -6,7 +6,7 @@
 			</legend>
 			<legend v-if="!isNew">
 				Edit {{ model.label | lowercase }}
-				<small class="text-muted pull-right">{{ activeEntry }}</small>
+				<small class="text-muted pull-right">{{ id }}</small>
 			</legend>
 
 			<template v-repeat="field: model.fields">
@@ -26,4 +26,4 @@
 	</p>
 </template>
 
-<em v-if="!isReady" class="text-muted">Loading {{ model.label | lowercase }}&hellip;</em>
+<em v-if="!entry" class="text-muted">Loading {{ model.label | lowercase }}&hellip;</em>
