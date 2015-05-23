@@ -52,31 +52,6 @@ router.redirect({
 	'/': '/' + models[Object.keys(models)[0]].property
 })
 
-// router.on('/', function () {
-// 	for (var k in models) {
-// 		location.replace('#/' + models[k].property)
-// 		return
-// 	}
-// })
-
-// router.on('/:type', function (type) {
-// 	app.view = 'entriesView'
-// 	app.model = models[type]
-// 	app.activeModel = app.model ? type : null
-// })
-
-// router.on('/:type/:id', function (type, id) {
-// 	app.view = 'entryView'
-// 	app.model = models[type]
-// 	app.activeModel = app.model ? type : null
-// 	app.activeEntry = id
-// })
-
-// router.configure({
-// 	notfound: function () {
-// 		console.log('No route found for path:', this.path)
-// 	}
-// })
 
 router.start(app)
 app.$mount(document.body)
