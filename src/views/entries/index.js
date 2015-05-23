@@ -7,6 +7,12 @@ module.exports = {
 	inherit: true,
 	template: require('./entries.html'),
 	methods: {
+		loadEntries: function () {
+			this.$delete('entries')
+			this.entriesRef.once('value', function (snapshot) {
+				this.$set('entries', snapshot.val())
+			}.bind(this))
+		},
 		edit: function (event, id) {
 			event.preventDefault()
 			if (id) {
@@ -15,6 +21,9 @@ module.exports = {
 		}
 	},
 	computed: {
+		path: function () {
+			return this.route.params.model
+		},
 		model: function () {
 			return models[this.route.params.model]
 		},
@@ -28,8 +37,6 @@ module.exports = {
 		}
 	},
 	created: function () {
-		this.entriesRef.once('value', function (snapshot) {
-			this.$set('entries', snapshot.val())
-		}.bind(this))
+		this.$watch('path', this.loadEntries, false, true)
 	}
 }

@@ -5,5 +5,10 @@ module.exports = {
 		isActive: function (property) {
 			return property === this.model
 		}
+	},
+	created: function () {
+		this.$watch('model', function () {
+			console.log(this.$root)
+		})
 	}
 }

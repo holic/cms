@@ -13,6 +13,29 @@ module.exports = {
 		imageField: require('../../components/fields/image')
 	},
 	methods: {
+		loadEntry: function () {
+			var vm = this
+
+			function set (entry) {
+				vm.$set('entry', entry)
+				var unwatch = vm.$watch('entry', function () {
+					vm.$set('hasChanged', true)
+					unwatch()
+				}, true)
+			}
+
+			if (vm.isNew) {
+				set({})
+				return
+			}
+
+			vm.entry = null
+			vm.entryRef.once('value', function (snapshot) {
+				setTimeout(function () {
+					set(snapshot.val())
+				}, 2000)
+			})
+		},
 		componentFor: function (type) {
 			switch (type) {
 				case 'text':
@@ -71,6 +94,9 @@ module.exports = {
 		}
 	},
 	computed: {
+		path: function () {
+			return this.route.params.model + '/' + this.route.params.id
+		},
 		model: function () {
 			return models[this.route.params.model]
 		},
@@ -88,24 +114,7 @@ module.exports = {
 		}
 	},
 	created: function () {
-		var vm = this
-
-		function set (entry) {
-			vm.$set('entry', entry)
-			var unwatch = vm.$watch('entry', function () {
-				vm.$set('hasChanged', true)
-				unwatch()
-			}, true)
-		}
-
-		if (vm.isNew) {
-			set({})
-			return
-		}
-
-		vm.entryRef.once('value', function (snapshot) {
-			set(snapshot.val())
-		})
+		this.$watch('path', this.loadEntry, false, true)
 	},
 	attached: function () {
 		var vm = this
