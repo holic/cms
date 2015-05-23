@@ -28,11 +28,6 @@ var app = new Vue({
 			activeEntry: null,
 			entry: null
 		}
-	},
-	computed: {
-		models: function () {
-			return models
-		}
 	}
 })
 

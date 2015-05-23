@@ -31,6 +31,8 @@ module.exports = {
 
 			vm.entry = null
 			vm.entryRef.once('value', function (snapshot) {
+				// simulate load time to expose error on navigation:
+				// https://github.com/yyx990803/vue/issues/864
 				setTimeout(function () {
 					set(snapshot.val())
 				}, 2000)

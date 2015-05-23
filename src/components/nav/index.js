@@ -1,14 +1,15 @@
+var models = require('../../models')
+
 module.exports = {
-	props: ['models', 'model'],
 	template: require('./nav.html'),
 	methods: {
 		isActive: function (property) {
-			return property === this.model
+			return property === this.$root.route.params.model
 		}
 	},
-	created: function () {
-		this.$watch('model', function () {
-			console.log(this.$root)
-		})
+	computed: {
+		models: function () {
+			return models
+		}
 	}
 }
