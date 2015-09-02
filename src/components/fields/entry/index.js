@@ -17,9 +17,11 @@ module.exports = {
 		var model = models[this.field.model]
 
 		dataRef.child(model.property).once('value', function (snapshot) {
-			// TODO: figure out better "unselected" option
-			//       ideally allow the disabled attribute in here
-			var options = [{ text: '', value: null }]
+			var options = [{
+				text: '',
+				value: null,
+				disabled: this.field.required
+			}]
 			snapshot.forEach(function (child) {
 				options.push({
 					value: child.ref().toString(),
