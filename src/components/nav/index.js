@@ -4,7 +4,7 @@ module.exports = {
 	template: require('./nav.html'),
 	methods: {
 		isActive: function (property) {
-			return property === this.$root.route.params.model
+			return property === this.$route.params.model
 		}
 	},
 	computed: {

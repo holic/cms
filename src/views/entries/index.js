@@ -22,10 +22,10 @@ module.exports = {
 	},
 	computed: {
 		path: function () {
-			return this.route.params.model
+			return this.$route.params.model
 		},
 		model: function () {
-			return models[this.route.params.model]
+			return models[this.$route.params.model]
 		},
 		fields: function () {
 			return this.model.fields.filter(function (filter) {

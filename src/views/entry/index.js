@@ -93,13 +93,13 @@ module.exports = {
 	},
 	computed: {
 		path: function () {
-			return this.route.params.model + '/' + this.route.params.id
+			return this.$route.params.model + '/' + this.$route.params.id
 		},
 		model: function () {
-			return models[this.route.params.model]
+			return models[this.$route.params.model]
 		},
 		id: function () {
-			return this.route.params.id
+			return this.$route.params.id
 		},
 		entriesRef: function () {
 			return dataRef.child(this.model.property)
