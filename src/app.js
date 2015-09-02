@@ -9,14 +9,5 @@ module.exports = {
 		plural: function (value) {
 			return pluralize(value)
 		}
-	},
-	data: function () {
-		return {
-			view: null,
-			activeModel: null,
-			model: null,
-			activeEntry: null,
-			entry: null
-		}
 	}
 }

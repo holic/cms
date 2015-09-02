@@ -4,7 +4,6 @@ var models = require('../../models')
 var dataRef = new Firebase('https://entries.firebaseIO.com/data/')
 
 module.exports = {
-	inherit: true,
 	template: require('./entry.html'),
 	components: {
 		textField: require('../../components/fields/text'),
@@ -14,7 +13,28 @@ module.exports = {
 	},
 	data: function () {
 		return {
+			entry: null,
 			hasChanged: false
+		}
+	},
+	computed: {
+		path: function () {
+			return this.$route.params.model + '/' + this.$route.params.id
+		},
+		model: function () {
+			return models[this.$route.params.model]
+		},
+		id: function () {
+			return this.$route.params.id
+		},
+		entriesRef: function () {
+			return dataRef.child(this.model.property)
+		},
+		entryRef: function () {
+			return this.entriesRef.child(this.id)
+		},
+		isNew: function () {
+			return this.id === 'new'
 		}
 	},
 	methods: {
@@ -75,26 +95,6 @@ module.exports = {
 			}.bind(this))
 		}
 	},
-	computed: {
-		path: function () {
-			return this.$route.params.model + '/' + this.$route.params.id
-		},
-		model: function () {
-			return models[this.$route.params.model]
-		},
-		id: function () {
-			return this.$route.params.id
-		},
-		entriesRef: function () {
-			return dataRef.child(this.model.property)
-		},
-		entryRef: function () {
-			return this.entriesRef.child(this.id)
-		},
-		isNew: function () {
-			return this.id === 'new'
-		}
-	},
 	watch: {
 		path: {
 			handler: function () {
@@ -105,7 +105,9 @@ module.exports = {
 					var unwatch = vm.$watch('entry', function () {
 						vm.hasChanged = true
 						unwatch()
-					}, true)
+					}, {
+						deep: true
+					})
 				}
 
 				if (vm.isNew) {

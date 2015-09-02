@@ -4,7 +4,6 @@ var models = require('../../models')
 var dataRef = new Firebase('https://entries.firebaseIO.com/data/')
 
 module.exports = {
-	inherit: true,
 	template: require('./entries.html'),
 	data: function () {
 		return {

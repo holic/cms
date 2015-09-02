@@ -3,6 +3,7 @@ var Router = require('vue-router')
 
 Vue.use(Router)
 
+// TODO: conditionally enable debug
 Vue.config.debug = true
 
 
