@@ -102,6 +102,7 @@ module.exports = {
 	},
 	watch: {
 		path: {
+			immediate: true,
 			handler: function () {
 				var vm = this
 
@@ -124,8 +125,7 @@ module.exports = {
 				vm.entryRef.once('value', function (snapshot) {
 					set(snapshot.val())
 				})
-			},
-			immediate: true
+			}
 		}
 	},
 	route: {

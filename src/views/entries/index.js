@@ -28,13 +28,13 @@ module.exports = {
 	},
 	watch: {
 		path: {
+			immediate: true,
 			handler: function () {
 				this.entries = null
 				this.entriesRef.once('value', function (snapshot) {
 					this.entries = snapshot.val()
 				}.bind(this))
-			},
-			immediate: true
+			}
 		}
 	}
 }
