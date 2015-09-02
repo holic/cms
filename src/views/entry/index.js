@@ -63,7 +63,7 @@ module.exports = {
 				}
 				else {
 					vm.$set('hasChanged', false)
-					location.assign('#/' + vm.model.property)
+					vm.$route.router.go('/' + vm.model.property)
 				}
 			})
 
@@ -90,7 +90,7 @@ module.exports = {
 					console.error('Could not remove:', err)
 				}
 				else {
-					location.assign('#/' + this.model.property)
+					this.$route.router.go('/' + this.model.property)
 				}
 			}.bind(this))
 		}
