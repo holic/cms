@@ -7,7 +7,7 @@
 			</tr>
 		</thead>
 		<tbody v-if="entries">
-			<tr v-repeat="entry : entries" v-on="click: edit($event, $key)" data-id="{{ $key }}" class="clickable">
+			<tr v-repeat="entry in entries" data-id="{{ $key }}" class="clickable" v-link="/{{ model.property }}/{{ $key }}">
 				<td v-repeat="fields">{{ entry[property] }}</td>
 			</tr>
 		</tbody>

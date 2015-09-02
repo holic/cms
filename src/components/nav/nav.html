@@ -1,3 +1,3 @@
 <div class="list-group">
-	<a v-repeat="models" href="#/{{ property }}" class="list-group-item" v-class="active: isActive(property)">{{ label | plural }}</a>
+	<a v-repeat="models" v-link="/{{ property }}" class="list-group-item" v-class="active: isActive(property)">{{ label | plural }}</a>
 </div>

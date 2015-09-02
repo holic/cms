@@ -11,14 +11,6 @@ module.exports = {
 			entries: null
 		}
 	},
-	methods: {
-		edit: function (event, id) {
-			event.preventDefault()
-			if (id) {
-				location.assign('#/' + this.model.property + '/' + id)
-			}
-		}
-	},
 	computed: {
 		path: function () {
 			return this.$route.params.model

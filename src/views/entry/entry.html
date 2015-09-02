@@ -9,7 +9,7 @@
 				<small class="text-muted pull-right">{{ id }}</small>
 			</legend>
 
-			<template v-repeat="field: model.fields">
+			<template v-repeat="field in model.fields">
 				<component is="{{ componentFor(field.type) }}" field="{{ field }}" entry="{{ entry }}"></component>
 			</template>
 			<div class="form-group">
