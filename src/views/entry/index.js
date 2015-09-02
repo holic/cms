@@ -12,6 +12,11 @@ module.exports = {
 		entryField: require('../../components/fields/entry'),
 		imageField: require('../../components/fields/image')
 	},
+	data: function () {
+		return {
+			hasChanged: false
+		}
+	},
 	methods: {
 		componentFor: function (type) {
 			switch (type) {
@@ -96,9 +101,9 @@ module.exports = {
 				var vm = this
 
 				function set (entry) {
-					vm.$set('entry', entry)
+					vm.entry = entry
 					var unwatch = vm.$watch('entry', function () {
-						vm.$set('hasChanged', true)
+						vm.hasChanged = true
 						unwatch()
 					}, true)
 				}
