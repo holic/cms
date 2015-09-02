@@ -7,7 +7,7 @@ var dataRef = new Firebase('https://entries.firebaseIO.com/data/')
 
 module.exports = {
 	mixins: [field, valueToProperty],
-	template: require('./entry.html'),
+	template: require('./ref.html'),
 	data: function () {
 		return {
 			options: null

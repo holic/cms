@@ -13,7 +13,7 @@ module.exports = {
 		{
 			label: 'Author',
 			property: 'author',
-			type: 'entry',
+			type: 'ref',
 			model: 'authors',
 			required: true
 		},

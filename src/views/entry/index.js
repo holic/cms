@@ -8,7 +8,7 @@ module.exports = {
 	components: {
 		textField: require('../../components/fields/text'),
 		markdownField: require('../../components/fields/markdown'),
-		entryField: require('../../components/fields/entry'),
+		refField: require('../../components/fields/ref'),
 		imageField: require('../../components/fields/image')
 	},
 	data: function () {
@@ -44,8 +44,8 @@ module.exports = {
 					return 'textField'
 				case 'markdown':
 					return 'markdownField'
-				case 'entry':
-					return 'entryField'
+				case 'ref':
+					return 'refField'
 				case 'image':
 					return 'imageField'
 				default:
