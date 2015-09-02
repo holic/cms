@@ -112,7 +112,9 @@ module.exports = {
 		}
 	},
 	created: function () {
-		this.$watch('path', this.loadEntry, false, true)
+		this.$watch('path', this.loadEntry, {
+			immediate: true
+		})
 	},
 	attached: function () {
 		var vm = this

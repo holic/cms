@@ -6,11 +6,16 @@ var dataRef = new Firebase('https://entries.firebaseIO.com/data/')
 module.exports = {
 	inherit: true,
 	template: require('./entries.html'),
+	data: function () {
+		return {
+			entries: null
+		}
+	},
 	methods: {
 		loadEntries: function () {
-			this.$delete('entries')
+			this.entries = null
 			this.entriesRef.once('value', function (snapshot) {
-				this.$set('entries', snapshot.val())
+				this.entries = snapshot.val()
 			}.bind(this))
 		},
 		edit: function (event, id) {
@@ -37,6 +42,8 @@ module.exports = {
 		}
 	},
 	created: function () {
-		this.$watch('path', this.loadEntries, false, true)
+		this.$watch('path', this.loadEntries, {
+			immediate: true
+		})
 	}
 }
