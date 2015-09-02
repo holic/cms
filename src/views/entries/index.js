@@ -12,12 +12,6 @@ module.exports = {
 		}
 	},
 	methods: {
-		loadEntries: function () {
-			this.entries = null
-			this.entriesRef.once('value', function (snapshot) {
-				this.entries = snapshot.val()
-			}.bind(this))
-		},
 		edit: function (event, id) {
 			event.preventDefault()
 			if (id) {
@@ -41,9 +35,15 @@ module.exports = {
 			return dataRef.child(this.model.property)
 		}
 	},
-	created: function () {
-		this.$watch('path', this.loadEntries, {
+	watch: {
+		path: {
+			handler: function () {
+				this.entries = null
+				this.entriesRef.once('value', function (snapshot) {
+					this.entries = snapshot.val()
+				}.bind(this))
+			},
 			immediate: true
-		})
+		}
 	}
 }
