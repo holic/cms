@@ -1,10 +1,12 @@
 var Firebase = require('firebase')
 var models = require('../../models')
+var pluralize = require('pluralize')
 
 var dataRef = new Firebase('https://entries.firebaseIO.com/data/')
 
 module.exports = {
 	template: require('./entries.html'),
+	mixins: [require('../../mixins/page-title')],
 	data: function () {
 		return {
 			entries: null
@@ -24,6 +26,9 @@ module.exports = {
 		},
 		entriesRef: function () {
 			return dataRef.child(this.model.property)
+		},
+		title: function () {
+			return pluralize(this.model.label)
 		}
 	},
 	watch: {

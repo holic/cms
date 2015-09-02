@@ -15,4 +15,9 @@ module.exports = function (router) {
 		'/': '/' + models[Object.keys(models)[0]].property
 	})
 
+	router.afterEach(function (transition) {
+		// help hash-based navigation get back to the top of the page
+		window.scrollTo(0, 0)
+	})
+
 }

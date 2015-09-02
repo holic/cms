@@ -5,6 +5,7 @@ var dataRef = new Firebase('https://entries.firebaseIO.com/data/')
 
 module.exports = {
 	template: require('./entry.html'),
+	mixins: [require('../../mixins/page-title')],
 	components: {
 		textField: require('../../components/fields/text'),
 		markdownField: require('../../components/fields/markdown'),
@@ -35,6 +36,13 @@ module.exports = {
 		},
 		isNew: function () {
 			return this.id === 'new'
+		},
+		title: function () {
+			var label = this.model.label.toLowerCase()
+
+			return this.isNew
+				? 'New ' + label
+				: 'Edit ' + label + ' (' + this.id + ')'
 		}
 	},
 	methods: {
