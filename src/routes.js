@@ -11,4 +11,8 @@ module.exports = function (router) {
 		}
 	})
 
+	router.redirect({
+		'/': '/' + models[Object.keys(models)[0]].property
+	})
+
 }
