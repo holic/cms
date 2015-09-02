@@ -123,15 +123,15 @@ module.exports = {
 			immediate: true
 		}
 	},
-	attached: function () {
-		var vm = this
-		// TODO: make this work for back button (push state)
-		window.addEventListener('beforeunload', function (event) {
-			if (vm.hasChanged) {
-				var confirm = 'You have unsaved changes.\nLeaving this page will discard these changes.'
-
-				return (event || window.event).returnValue = confirm
+	route: {
+		// If this can't be deactivated, VueRouter uses .replace. This is generally fine
+		// and leads to a good experience when navigating forward, but causes weirdness
+		// when navigating backwards. Not sure how to solve this!
+		canDeactivate: function () {
+			if (this.hasChanged) {
+				return window.confirm('You have unsaved changes.\nLeaving this page will discard these changes.')
 			}
-		}, false)
+			return true
+		}
 	}
 }
