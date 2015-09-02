@@ -59,12 +59,14 @@ module.exports = {
 
 			var done = (function (err) {
 				if (err) {
+					// TODO: better error handling
 					console.error('Could not save:', err)
+					alert('Could not save. See console for details.')
+					return
 				}
-				else {
-					vm.hasChanged = false
-					vm.$route.router.go('/' + vm.model.property)
-				}
+
+				vm.hasChanged = false
+				vm.$route.router.go('/' + vm.model.property)
 			})
 
 			// skip save when nothing has changed
@@ -87,11 +89,14 @@ module.exports = {
 
 			this.entryRef.remove(function (err) {
 				if (err) {
+					// TODO: better error handling
 					console.error('Could not remove:', err)
+					alert('Could not remove. See console for details.')
+					return
 				}
-				else {
-					this.$route.router.go('/' + this.model.property)
-				}
+
+				vm.hasChanged = false
+				this.$route.router.go('/' + this.model.property)
 			}.bind(this))
 		}
 	},
