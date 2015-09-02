@@ -62,7 +62,7 @@ module.exports = {
 					console.error('Could not save:', err)
 				}
 				else {
-					vm.$set('hasChanged', false)
+					vm.hasChanged = false
 					vm.$route.router.go('/' + vm.model.property)
 				}
 			})
