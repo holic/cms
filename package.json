@@ -2,17 +2,20 @@
   "private": true,
   "name": "cms",
   "scripts": {
+    "start": "static public & npm run dev",
     "build": "browserify -d -t partialify -e src/index.js -o public/app.js",
     "dev": "watchify -d -t partialify -d -e src/index.js -o public/app.js"
   },
   "dependencies": {
-    "bootstrap": "^3.3.5",
-    "browserify": "^11.0.1",
     "firebase": "^2.2.9",
-    "partialify": "^3.1.5",
     "pluralize": "^1.1.5",
     "vue": "^0.12.12",
-    "vue-router": "^0.5.2",
+    "vue-router": "^0.5.2"
+  },
+  "devDependencies": {
+    "browserify": "^11.0.1",
+    "node-static": "^0.7.7",
+    "partialify": "^3.1.5",
     "watchify": "^3.3.1"
   }
 }
