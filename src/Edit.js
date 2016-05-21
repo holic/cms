@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { database } from './firebase'
 import { map } from './utils'
 import * as models from './models'
+import * as fields from './fields'
 
 const modelsByProperty = {}
 
@@ -48,7 +49,7 @@ export default class Edit extends Component {
   loadEntry (model, id) {
     console.log('loading entry for', model, id)
     const ref = database.ref(`data/${model.property}/${id}`)
-    ref.on('value', snapshot => {
+    ref.once('value', snapshot => {
       // TODO: throw out if state has changed
       this.setState({
         isLoading: false,
@@ -65,12 +66,10 @@ export default class Edit extends Component {
     return (
       <div>
         <form>
-          {this.state.model.fields.map((field, i) => (
-            <fieldset key={i} className="form-group">
-              <label>{field.label}</label>
-              <input type="text" className="form-control" defaultValue={this.state.entry[field.property]} />
-            </fieldset>
-          ))}
+          {this.state.model.fields.map((field, i) => {
+            const Field = fields[field.type] || fields.text
+            return <Field key={i} {...field} value={this.state.entry[field.property]} />
+          })}
           <button className="btn btn-primary btn-lg">Save</button>
         </form>
       </div>

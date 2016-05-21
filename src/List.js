@@ -47,7 +47,7 @@ export default class List extends Component {
   loadEntries (model) {
     console.log('loading entries for', model)
     const ref = database.ref(`data/${model.property}`)
-    ref.on('value', snapshot => {
+    ref.once('value', snapshot => {
       // TODO: throw out if state has changed
       this.setState({
         isLoading: false,
