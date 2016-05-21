@@ -64,15 +64,13 @@ export default class Edit extends Component {
     }
 
     return (
-      <div>
-        <form>
-          {this.state.model.fields.map((field, i) => {
-            const Field = fields[field.type] || fields.text
-            return <Field key={i} {...field} value={this.state.entry[field.property]} />
-          })}
-          <button className="btn btn-primary btn-lg">Save</button>
-        </form>
-      </div>
+      <form>
+        {this.state.model.fields.map((field, i) => {
+          const Field = fields[field.type] || fields.text
+          return <Field key={i} {...field} value={this.state.entry[field.property]} />
+        })}
+        <button className="btn btn-primary btn-lg">Save</button>
+      </form>
     )
   }
 }
