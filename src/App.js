@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import Nav from './Nav'
 import Manager from './Manager'
 
@@ -11,7 +11,7 @@ export default class App extends Component {
             <Nav />
           </div>
           <div className="col-sm-8 col-md-9 col-lg-10 p-a-2">
-            <Manager />
+            {this.props.children}
           </div>
         </div>
       </div>

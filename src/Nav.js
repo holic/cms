@@ -1,6 +1,7 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
+import { Link } from 'react-router'
 import pluralize from 'pluralize'
-import {map, capitalize} from './utils'
+import { map, capitalize } from './utils'
 import * as models from './models'
 
 export default class Nav extends Component {
@@ -12,7 +13,7 @@ export default class Nav extends Component {
           <ul className="nav nav-pills nav-stacked">
             {map(models, (key, model) => (
               <li key={key} className="nav-item">
-                <a className="nav-link" href={`/content/${model.property}`}>{capitalize(pluralize(model.label))}</a>
+                <Link to={`/content/${model.property}`} className="nav-link" activeClassName="active">{capitalize(pluralize(model.label))}</Link>
               </li>
             ))}
           </ul>
