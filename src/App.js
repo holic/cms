@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import Nav from './Nav'
-import Manager from './Manager'
 
 export default class App extends Component {
   render () {

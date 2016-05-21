@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router'
 import { database } from './firebase'
 import { map } from './utils'
 import * as models from './models'
@@ -10,7 +11,7 @@ map(models, (key, model) => {
 })
 
 
-export default class Manager extends Component {
+export default class List extends Component {
   constructor (props) {
     super(props)
 
@@ -22,8 +23,10 @@ export default class Manager extends Component {
       isLoading: true,
       entries: [],
     }
+  }
 
-    this.loadEntries(model)
+  componentWillMount () {
+    this.loadEntries(this.state.model)
   }
 
   componentWillReceiveProps (nextProps) {
@@ -45,10 +48,7 @@ export default class Manager extends Component {
     console.log('loading entries for', model)
     const ref = database.ref(`data/${model.property}`)
     ref.on('value', snapshot => {
-      // if (this.state.model !== model) {
-      //   console.log('not the right model, throwing out results')
-      //   return
-      // }
+      // TODO: throw out if state has changed
       this.setState({
         isLoading: false,
         entries: snapshot.val()
@@ -64,14 +64,17 @@ export default class Manager extends Component {
     return (
       <div>
         <p className="text-sm-right">
-          <a className="btn btn-success" href="#">New {this.state.model.label}</a>
+          <Link to={`/content/${this.state.model.property}/new`} className="btn btn-secondary">
+            New {this.state.model.label}
+          </Link>
         </p>
-        <table className="table">
+        <table className="table table-hover">
           <thead>
             <tr>
               {this.state.listedFields.map((field, i) => (
                 <th key={i}>{field.label}</th>
               ))}
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -80,6 +83,13 @@ export default class Manager extends Component {
                 {this.state.listedFields.map((field, i) => (
                   <td key={i}>{entry[field.property]}</td>
                 ))}
+                <td width="1">
+                  <Link to={`/content/${this.state.model.property}/${id}`}>
+                    <svg viewBox="0 0 8 8" style={{width: '1em', height: '1em', fill: 'currentColor'}}>
+                      <path d="M3.5 0l-.5 1.19c-.1.03-.19.08-.28.13l-1.19-.5-.72.72.5 1.19c-.05.1-.09.18-.13.28l-1.19.5v1l1.19.5c.04.1.08.18.13.28l-.5 1.19.72.72 1.19-.5c.09.04.18.09.28.13l.5 1.19h1l.5-1.19c.09-.04.19-.08.28-.13l1.19.5.72-.72-.5-1.19c.04-.09.09-.19.13-.28l1.19-.5v-1l-1.19-.5c-.03-.09-.08-.19-.13-.28l.5-1.19-.72-.72-1.19.5c-.09-.04-.19-.09-.28-.13l-.5-1.19h-1zm.5 2.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5-1.5-.67-1.5-1.5.67-1.5 1.5-1.5z" />
+                    </svg>
+                  </Link>
+                </td>
               </tr>
             ))}
           </tbody>
