@@ -1,9 +1,11 @@
 import React, {Component} from 'react'
 import {database} from './firebase'
+import {map} from './utils'
+import * as models from './models'
 
-const listRef = database.ref('data/posts')
-
-const map = (object, fn) => Object.keys(object).map((key) => fn(key, object[key]))
+const model = models.Post
+const listRef = database.ref(`data/${model.property}`)
+const listedFields = model.fields.filter(field => field.listed)
 
 export default class Manager extends Component {
   constructor (props) {
@@ -33,18 +35,22 @@ export default class Manager extends Component {
     return (
       <div>
         <p className="text-sm-right">
-          <a className="btn btn-success" href="#">New blog post</a>
+          <a className="btn btn-success" href="#">New {model.label}</a>
         </p>
         <table className="table">
           <thead>
             <tr>
-              <th>Title</th>
+              {listedFields.map((field, i) => (
+                <th key={i}>{field.label}</th>
+              ))}
             </tr>
           </thead>
           <tbody>
             {map(this.state.entries, (id, entry) => (
               <tr key={id}>
-                <td>{entry.title}</td>
+                {listedFields.map((field, i) => (
+                  <td key={i}>{entry[field.property]}</td>
+                ))}
               </tr>
             ))}
           </tbody>
