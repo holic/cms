@@ -27,7 +27,9 @@ export default class Image extends Component {
     const [file] = el.files || []
     if (!file) return
 
-    const ref = storage.ref('images')
+    console.log('Uploading file', file)
+
+    const ref = storage.ref(`images/${file.name}`)
     const upload = ref.put(file, { contentType: file.type })
 
     upload.on('state_changed',
@@ -62,19 +64,19 @@ export default class Image extends Component {
   renderInput () {
     if (this.state.isUploading) {
       return (
-        <p className="form-control-static">
+        <div>
           <button type="button" className="btn btn-primary" disabled>
             Uploading&hellip; <LoadingIcon />
           </button>
-        </p>
+        </div>
       )
     }
 
     return (
-      <p className="form-control-static">
+      <div>
         <label htmlFor="upload-input" className="btn btn-primary m-b-0">Upload an image</label>
         <input id="upload-input" className="hidden-xs-up" type="file" accept="image/*" onChange={this.uploadImage} />
-      </p>
+      </div>
     )
   }
 
@@ -82,7 +84,7 @@ export default class Image extends Component {
     return (
       <div className="row">
         <div className="col-sm-10 col-md-8 col-lg-6">
-          <div className="card card-inverse">
+          <div className="card card-inverse m-b-0">
             <img className="card-img img-fluid" src={this.props.value} />
             <div className="card-img-overlay">
               <p className="card-text text-xs-right">
