@@ -86,14 +86,14 @@ class Edit extends Component {
     })
   }
 
-  save = (event) => {
+  saveEntry = (event) => {
     event.preventDefault()
 
-    if (this.state.id === 'new') {
-      database.ref(`data/${this.state.model.property}`).push(this.state.entry)
+    if (this.state.ref) {
+      this.state.ref.set(this.state.entry)
     }
     else {
-      this.state.ref.set(this.state.entry)
+      database.ref(`data/${this.state.model.property}`).push(this.state.entry)
     }
 
     this.setState({
@@ -101,6 +101,21 @@ class Edit extends Component {
     }, () => {
       this.props.router.push(`/content/${this.props.params.model}`)
     })
+  }
+
+  deleteEntry = (event) => {
+    // No ref to delete? This should only happen when this is a new entry.
+    if (!this.state.ref) return
+
+    if (window.confirm('This cannot be undone. Continue?')) {
+      this.state.ref.remove()
+
+      this.setState({
+        hasUnsavedChanges: false,
+      }, () => {
+        this.props.router.push(`/content/${this.props.params.model}`)
+      })
+    }
   }
 
   render () {
@@ -113,13 +128,20 @@ class Edit extends Component {
     }
 
     return (
-      <form onSubmit={this.save}>
-        {this.state.model.fields.map((field, i) => {
-          const Field = fields[field.type] || fields.text
-          return <Field key={i} {...field} value={this.state.entry[field.property]} onChange={this.setProperty.bind(this, field.property)} />
-        })}
-        <button type="submit" className="btn btn-primary btn-lg" disabled={!this.state.hasUnsavedChanges}>Save</button>
-      </form>
+      <div>
+        <form onSubmit={this.saveEntry}>
+          {this.state.model.fields.map((field, i) => {
+            const Field = fields[field.type] || fields.text
+            return <Field key={i} {...field} value={this.state.entry[field.property]} onChange={this.setProperty.bind(this, field.property)} />
+          })}
+          <button type="submit" className="btn btn-primary btn-lg" disabled={!this.state.hasUnsavedChanges}>Save</button>
+        </form>
+        {this.state.ref ?
+          <p className="text-xs-right">
+            <button type="button" className="btn btn-link text-muted" onClick={this.deleteEntry}>Delete this {this.state.model.label}</button>
+          </p>
+        : null}
+      </div>
     )
   }
 }
