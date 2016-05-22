@@ -15,6 +15,7 @@ export default {
 			property: 'author',
 			type: 'ref',
 			model: 'authors',
+			ref_label_property: 'name',
 			required: true
 		},
 		{

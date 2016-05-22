@@ -42,10 +42,11 @@ export default class Reference extends Component {
     ref.once('value', snapshot => {
       const options = []
       snapshot.forEach(child => {
+        const value = child.val()
         options.push({
           value: child.ref.toString(),
           // TODO: make `name` property configurable
-          text: child.val().name,
+          text: value[this.props.ref_label_property],
         })
       })
       this.setState({
