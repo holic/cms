@@ -18,6 +18,7 @@ export default class Nav extends Component {
             ))}
           </ul>
         </div>
+        {/*
         <div className="m-t-1 m-b-3">
           <h6 className="m-x-1 text-muted text-uppercase"><small>Settings</small></h6>
           <ul className="nav nav-pills nav-stacked">
@@ -26,6 +27,7 @@ export default class Nav extends Component {
             </li>
           </ul>
         </div>
+        */}
       </div>
     )
   }

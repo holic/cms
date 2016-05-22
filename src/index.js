@@ -1,6 +1,6 @@
 import React from 'react'
 import { render } from 'react-dom'
-import { Router, Route, IndexRedirect, Link, browserHistory } from 'react-router'
+import { Router, Route, IndexRoute, IndexRedirect, Link, browserHistory } from 'react-router'
 
 import App from './App'
 import List from './List'
@@ -15,8 +15,10 @@ render(
   <Router history={browserHistory}>
     <Route path="/" component={App}>
       <IndexRedirect to={`/content/${firstModel.property}`} />
-      <Route path="content/:model" component={List} />
-      <Route path="content/:model/:id" component={Edit} />
+      <Route path="content/:model">
+        <IndexRoute component={List} />
+        <Route path=":id" component={Edit} />
+      </Route>
     </Route>
   </Router>,
   document.getElementById('app')
