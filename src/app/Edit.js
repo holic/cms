@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router'
-import { database } from './firebase'
-import { map } from './utils'
-import * as models from './models'
-import * as fields from './fields'
-import { LoadingIcon } from './icons'
+import { database } from '../firebase'
+import { map } from '../utils'
+import * as models from '../models'
+import * as fields from '../fields'
+import { LoadingIcon } from '../icons'
 
 const modelsByProperty = {}
 

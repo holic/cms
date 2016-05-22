@@ -4,7 +4,7 @@ import { Router, Route, IndexRoute, IndexRedirect, Link, browserHistory } from '
 import Layout from './Layout'
 import List from './List'
 import Edit from './Edit'
-import * as models from './models'
+import * as models from '../models'
 
 // TODO: make sure we're routing to a valid model, otherwise redirect
 

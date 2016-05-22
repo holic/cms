@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router'
 import pluralize from 'pluralize'
-import { map, capitalize } from './utils'
-import * as models from './models'
+import { map, capitalize } from '../utils'
+import * as models from '../models'
 
 export default class Nav extends Component {
   render () {

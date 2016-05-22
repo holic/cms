@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router'
-import { database } from './firebase'
-import { map } from './utils'
-import * as models from './models'
-import { CogIcon, LoadingIcon } from './icons'
+import { database } from '../firebase'
+import { map } from '../utils'
+import * as models from '../models'
+import { CogIcon, LoadingIcon } from '../icons'
 
 const modelsByProperty = {}
 
