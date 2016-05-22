@@ -14,7 +14,7 @@ const inputType = type => {
 export default class Text extends Component {
   onChange = (event) => {
     if (this.props.onChange) {
-      this.props.onChange(event.target.value)
+      this.props.onChange(event.target.value === '' ? null : event.target.value)
     }
   }
 
