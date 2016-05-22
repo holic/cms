@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 import { database } from '../firebase'
 import { map } from '../utils'
 import * as models from '../models'
+import ReloadIcon from '../icons/Reload'
 
 const modelsByProperty = {}
 
@@ -48,7 +49,9 @@ export default class Reference extends Component {
       <fieldset className="form-group m-b-2">
         <label className="text-muted">{this.props.label}</label>
         {this.state.isLoading ?
-          <p className="form-control-static"><em className="text-muted">Loading...</em></p>
+          <p className="form-control-static text-info">
+            <ReloadIcon className="icon-spin" />
+          </p>
         : null}
         {!this.state.isLoading ?
           <select className="form-control form-control-lg" defaultValue={this.props.value}>
