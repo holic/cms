@@ -8,7 +8,7 @@ export default class Nav extends Component {
   render () {
     return (
       <div>
-        <div className="m-t-1 m-b-3">
+        <div className="m-t-1">
           <h6 className="m-x-1 text-muted text-uppercase"><small>Content</small></h6>
           <ul className="nav nav-pills nav-stacked">
             {map(models, (key, model) => (
@@ -19,7 +19,7 @@ export default class Nav extends Component {
           </ul>
         </div>
         {/*
-        <div className="m-t-1 m-b-3">
+        <div className="m-t-3">
           <h6 className="m-x-1 text-muted text-uppercase"><small>Settings</small></h6>
           <ul className="nav nav-pills nav-stacked">
             <li className="nav-item">
