@@ -1,4 +1,4 @@
-export const Author = {
+export default {
 	label: 'author',
 	property: 'authors',
 	type: 'collection',

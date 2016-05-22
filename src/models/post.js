@@ -1,4 +1,4 @@
-export const Post = {
+export default {
 	label: 'blog post',
 	property: 'posts',
 	type: 'collection',

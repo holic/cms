@@ -1,4 +1,6 @@
-export {default as text} from './Text'
-export {default as markdown} from './Markdown'
-export {default as ref} from './Reference'
-export {default as image} from './Image'
+import { default as text } from './Text'
+import { default as markdown } from './Markdown'
+import { default as ref } from './Reference'
+import { default as image } from './Image'
+
+export { text, markdown, ref, image }
