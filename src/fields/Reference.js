@@ -60,6 +60,12 @@ export default class Reference extends Component {
     if (ref) ref.off('value')
   }
 
+  onChange = (event) => {
+    if (this.props.onChange) {
+      this.props.onChange(event.target.value === '' ? null : event.target.value)
+    }
+  }
+
   render () {
     return (
       <fieldset className="form-group m-b-2">
@@ -70,7 +76,7 @@ export default class Reference extends Component {
           </p>
         : null}
         {!this.state.isLoading ?
-          <select className="form-control form-control-lg" defaultValue={this.props.value == null ? '' : this.props.value}>
+          <select className="form-control form-control-lg" value={this.props.value == null ? '' : this.props.value} onChange={this.onChange}>
             <option value="" disabled></option>
             {map(this.state.options, (i, option) => (
               <option key={i} value={option.value}>{option.text}</option>

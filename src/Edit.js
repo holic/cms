@@ -20,8 +20,19 @@ export default class Edit extends Component {
     this.loadEntry(model, id)
   }
 
+  componentDidMount () {
+    window.setBody = (body) => {
+      this.setState({
+        entry: {
+          ...this.state.entry,
+          body: body,
+        }
+      })
+    }
+  }
+
   componentWillReceiveProps (nextProps) {
-    if (nextProps.params.model !== this.props.params.model && nextProps.params.id !== this.props.params.id) {
+    if (nextProps.params.model !== this.props.params.model || nextProps.params.id !== this.props.params.id) {
       const model = modelsByProperty[nextProps.params.model]
       const { id } = nextProps.props.params
 
@@ -65,6 +76,15 @@ export default class Edit extends Component {
     if (ref) ref.off('value')
   }
 
+  setProperty (property, value) {
+    this.setState({
+      entry: {
+        ...this.state.entry,
+        [property]: value,
+      }
+    })
+  }
+
   render () {
     if (this.state.isLoading) {
       return (
@@ -78,7 +98,7 @@ export default class Edit extends Component {
       <form>
         {this.state.model.fields.map((field, i) => {
           const Field = fields[field.type] || fields.text
-          return <Field key={i} {...field} value={this.state.entry[field.property]} />
+          return <Field key={i} {...field} value={this.state.entry[field.property]} onChange={this.setProperty.bind(this, field.property)} />
         })}
         <button className="btn btn-primary btn-lg">Save</button>
       </form>
