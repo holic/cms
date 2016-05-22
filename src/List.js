@@ -13,48 +13,43 @@ map(models, (key, model) => {
 
 
 export default class List extends Component {
-  constructor (props) {
-    super(props)
-
+  componentWillMount () {
     const model = modelsByProperty[this.props.params.model]
 
-    this.state = {
-      model: model,
-      listedFields: model.fields.filter(field => field.listed),
-      isLoading: true,
-      entries: [],
-    }
-  }
-
-  componentWillMount () {
-    this.loadEntries(this.state.model)
+    this.loadEntries(model)
   }
 
   componentWillReceiveProps (nextProps) {
     if (nextProps.params.model !== this.props.params.model) {
       const model = modelsByProperty[nextProps.params.model]
 
-      this.setState({
-        model: model,
-        listedFields: model.fields.filter(field => field.listed),
-        isLoading: true,
-        entries: [],
-      })
-
       this.loadEntries(model)
     }
   }
 
   loadEntries (model) {
-    console.log('loading entries for', model)
     const ref = database.ref(`data/${model.property}`)
+
+    this.setState({
+      model: model,
+      listedFields: model.fields.filter(field => field.listed),
+      ref: ref,
+      isLoading: true,
+      entries: null,
+    })
+
+    ref.off('value')
     ref.once('value', snapshot => {
-      // TODO: throw out if state has changed
       this.setState({
         isLoading: false,
         entries: snapshot.val()
       })
     })
+  }
+
+  componentWillUnmount () {
+    const { ref } = this.state
+    if (ref) ref.off('value')
   }
 
   render () {

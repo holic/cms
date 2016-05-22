@@ -13,22 +13,11 @@ map(models, (key, model) => {
 
 
 export default class Edit extends Component {
-  constructor (props) {
-    super(props)
-
+  componentWillMount () {
     const model = modelsByProperty[this.props.params.model]
     const { id } = this.props.params
 
-    this.state = {
-      model: model,
-      id: id,
-      isLoading: true,
-      entry: null,
-    }
-  }
-
-  componentWillMount () {
-    this.loadEntry(this.state.model, this.state.id)
+    this.loadEntry(model, id)
   }
 
   componentWillReceiveProps (nextProps) {
@@ -36,27 +25,44 @@ export default class Edit extends Component {
       const model = modelsByProperty[nextProps.params.model]
       const { id } = nextProps.props.params
 
-      this.setState({
-        model: model,
-        id: id,
-        isLoading: true,
-        entry: null,
-      })
-
       this.loadEntry(model, id)
     }
   }
 
   loadEntry (model, id) {
-    console.log('loading entry for', model, id)
+    if (id === 'new') {
+      this.setState({
+        model: model,
+        id: id,
+        ref: null,
+        isLoading: false,
+        entry: {},
+      })
+      return
+    }
+
     const ref = database.ref(`data/${model.property}/${id}`)
+
+    this.setState({
+      model: model,
+      id: id,
+      ref: ref,
+      isLoading: true,
+      entry: null,
+    })
+
+    ref.off('value')
     ref.once('value', snapshot => {
-      // TODO: throw out if state has changed
       this.setState({
         isLoading: false,
         entry: snapshot.val()
       })
     })
+  }
+
+  componentWillUnmount () {
+    const { ref } = this.state
+    if (ref) ref.off('value')
   }
 
   render () {

@@ -14,20 +14,31 @@ map(models, (key, model) => {
 // TODO: prop types
 
 export default class Reference extends Component {
-  constructor (props) {
-    super(props)
-
+  componentWillMount () {
     const model = modelsByProperty[this.props.model]
 
-    this.state = {
-      model: model,
-      isLoading: true,
-      options: [],
+    this.loadOptions(model)
+  }
+
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.model !== this.props.model) {
+      const model = modelsByProperty[nextProps.model]
+
+      this.loadOptions(model)
     }
   }
 
-  componentWillMount () {
-    const ref = database.ref(`data/${this.state.model.property}`)
+  loadOptions (model) {
+    const ref = database.ref(`data/${model.property}`)
+
+    this.setState({
+      model: model,
+      ref: ref,
+      isLoading: true,
+      options: null,
+    })
+
+    ref.off('value')
     ref.once('value', snapshot => {
       const options = []
       snapshot.forEach(child => {
@@ -44,6 +55,11 @@ export default class Reference extends Component {
     })
   }
 
+  componentWillUnmount () {
+    const { ref } = this.state
+    if (ref) ref.off('value')
+  }
+
   render () {
     return (
       <fieldset className="form-group m-b-2">
@@ -54,7 +70,8 @@ export default class Reference extends Component {
           </p>
         : null}
         {!this.state.isLoading ?
-          <select className="form-control form-control-lg" defaultValue={this.props.value}>
+          <select className="form-control form-control-lg" defaultValue={this.props.value == null ? '' : this.props.value}>
+            <option value="" disabled></option>
             {map(this.state.options, (i, option) => (
               <option key={i} value={option.value}>{option.text}</option>
             ))}
