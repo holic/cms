@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router'
+import DocumentTitle from 'react-document-title'
 import { database } from '../firebase'
 import { map } from '../utils'
 import * as models from '../models'
@@ -118,7 +119,7 @@ class Edit extends Component {
     }
   }
 
-  render () {
+  renderContent () {
     if (this.state.isLoading) {
       return (
         <p>
@@ -142,6 +143,14 @@ class Edit extends Component {
           </p>
         : null}
       </div>
+    )
+  }
+
+  render () {
+    return (
+      <DocumentTitle title={this.state.ref ? `Edit ${this.state.model.label}` : `New ${this.state.model.label}`}>
+        {this.renderContent()}
+      </DocumentTitle>
     )
   }
 }
