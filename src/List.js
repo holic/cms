@@ -3,7 +3,7 @@ import { Link } from 'react-router'
 import { database } from './firebase'
 import { map } from './utils'
 import * as models from './models'
-import { CogIcon, ReloadIcon } from './icons'
+import { CogIcon, LoadingIcon } from './icons'
 
 const modelsByProperty = {}
 
@@ -78,8 +78,8 @@ export default class List extends Component {
           {this.state.isLoading ?
             <tfoot>
               <tr>
-                <td colSpan={this.state.listedFields.length + 1} className="text-info">
-                  <ReloadIcon className="icon-spin" />
+                <td colSpan={this.state.listedFields.length + 1}>
+                  <LoadingIcon />
                 </td>
               </tr>
             </tfoot>

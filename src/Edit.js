@@ -3,7 +3,7 @@ import { database } from './firebase'
 import { map } from './utils'
 import * as models from './models'
 import * as fields from './fields'
-import ReloadIcon from './icons/Reload'
+import { LoadingIcon } from './icons'
 
 const modelsByProperty = {}
 
@@ -62,8 +62,8 @@ export default class Edit extends Component {
   render () {
     if (this.state.isLoading) {
       return (
-        <p className="text-info">
-          <ReloadIcon className="icon-spin" />
+        <p>
+          <LoadingIcon />
         </p>
       )
     }
