@@ -1,19 +1,25 @@
-import React, { Component } from 'react'
-import Nav from './Nav'
+import React from 'react'
+import { Router, Route, IndexRoute, IndexRedirect, Link, browserHistory } from 'react-router'
 
-export default class App extends Component {
-  render () {
-    return (
-      <div className="container-fluid">
-        <div className="row">
-          <div className="col-sm-4 col-md-3 col-lg-2 p-a-2 bg-faded" style={{position: 'absolute', top: 0, left: 0, bottom: 0}}>
-            <Nav />
-          </div>
-          <div className="offset-sm-4 offset-md-3 offset-lg-2 col-sm-8 col-md-9 col-lg-10 p-a-2">
-            {this.props.children}
-          </div>
-        </div>
-      </div>
-    )
-  }
+import Layout from './Layout'
+import List from './List'
+import Edit from './Edit'
+import * as models from './models'
+
+// TODO: make sure we're routing to a valid model, otherwise redirect
+
+const firstModel = models[Object.keys(models)[0]]
+
+export default function App () {
+  return (
+    <Router history={browserHistory}>
+      <Route path="/" component={Layout}>
+        <IndexRedirect to={`/content/${firstModel.property}`} />
+        <Route path="content/:model">
+          <IndexRoute component={List} />
+          <Route path=":id" component={Edit} />
+        </Route>
+      </Route>
+    </Router>
+  )
 }

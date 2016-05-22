@@ -1,25 +1,27 @@
+import 'react-hot-loader/patch'
+
 import React from 'react'
 import { render } from 'react-dom'
-import { Router, Route, IndexRoute, IndexRedirect, Link, browserHistory } from 'react-router'
-
+import { AppContainer } from 'react-hot-loader'
 import App from './App'
-import List from './List'
-import Edit from './Edit'
-import * as models from './models'
 
-// TODO: make sure we're routing to a valid model, otherwise redirect
-
-const firstModel = models[Object.keys(models)[0]]
+const rootEl = document.getElementById('app')
 
 render(
-  <Router history={browserHistory}>
-    <Route path="/" component={App}>
-      <IndexRedirect to={`/content/${firstModel.property}`} />
-      <Route path="content/:model">
-        <IndexRoute component={List} />
-        <Route path=":id" component={Edit} />
-      </Route>
-    </Route>
-  </Router>,
-  document.getElementById('app')
+  <AppContainer>
+    <App />
+  </AppContainer>,
+  rootEl
 )
+
+if (module.hot) {
+  module.hot.accept('./App', () => {
+    const NextApp = require('./App').default
+    render(
+      <AppContainer>
+        <NextApp />
+      </AppContainer>,
+      rootEl
+    )
+  })
+}
