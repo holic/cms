@@ -7,4 +7,6 @@ Firebase.initializeApp({
   storageBucket: 'project-164560165500119978.appspot.com',
 })
 
+export const auth = Firebase.auth()
 export const database = Firebase.database()
+export const storage = Firebase.storage()
