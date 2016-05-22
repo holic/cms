@@ -22,7 +22,7 @@ export default class Text extends Component {
     return (
       <fieldset className="form-group m-b-2">
         <label className="text-muted">{this.props.label}</label>
-        <input type={inputType(this.props.type)} className="form-control form-control-lg" value={this.props.value} onChange={this.onChange} />
+        <input type={inputType(this.props.type)} className="form-control form-control-lg" value={this.props.value == null ? '' : this.props.value} onChange={this.onChange} />
       </fieldset>
     )
   }
