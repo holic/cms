@@ -156,4 +156,3 @@ class Edit extends Component {
 }
 
 export default withRouter(Edit)
-
