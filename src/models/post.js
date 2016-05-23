@@ -4,14 +4,14 @@ export default {
 	type: 'collection',
 	fields: [
 		{
-			label: 'Title',
+			label: 'title',
 			property: 'title',
 			type: 'text',
 			required: true,
 			listed: true
 		},
 		{
-			label: 'Author',
+			label: 'author',
 			property: 'author',
 			type: 'ref',
 			model: 'authors',
@@ -19,12 +19,12 @@ export default {
 			required: true
 		},
 		{
-			label: 'Header image',
+			label: 'header image',
 			property: 'header_image',
 			type: 'image'
 		},
 		{
-			label: 'Post body',
+			label: 'post body',
 			property: 'body',
 			type: 'markdown',
 			required: true

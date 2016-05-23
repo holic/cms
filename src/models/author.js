@@ -4,7 +4,7 @@ export default {
 	type: 'collection',
 	fields: [
 		{
-			label: 'Name',
+			label: 'name',
 			property: 'name',
 			type: 'text',
 			required: true,

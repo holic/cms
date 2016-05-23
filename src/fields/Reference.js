@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router'
 import { database } from '../firebase'
-import { map } from '../utils'
+import { map, capitalize } from '../utils'
 import * as models from '../models'
 import { LoadingIcon } from '../icons'
 
@@ -70,7 +70,7 @@ export default class Reference extends Component {
   render () {
     return (
       <fieldset className="form-group m-b-2">
-        <label className="text-muted">{this.props.label}</label>
+        <label className="text-muted">{capitalize(this.props.label)}</label>
         {this.state.isLoading ?
           <p className="form-control-static">
             <LoadingIcon />

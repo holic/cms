@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { storage } from '../firebase'
 import { LoadingIcon } from '../icons'
+import { capitalize } from '../utils'
 
 // TODO: prop types
 
@@ -100,7 +101,7 @@ export default class Image extends Component {
   render () {
     return (
       <fieldset className="form-group m-b-2">
-        <label className="text-muted">{this.props.label}</label>
+        <label className="text-muted">{capitalize(this.props.label)}</label>
         {this.props.value ? this.renderValue() : this.renderInput()}
       </fieldset>
     )

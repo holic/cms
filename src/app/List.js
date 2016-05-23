@@ -67,7 +67,7 @@ export default class List extends Component {
             <thead>
               <tr>
                 {this.state.listedFields.map((field, i) => (
-                  <th key={i}>{field.label}</th>
+                  <th key={i}>{capitalize(field.label)}</th>
                 ))}
                 <th width="1"></th>
               </tr>
