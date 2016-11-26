@@ -4,6 +4,7 @@
   "scripts": {
     "start": "node server.js",
     "lint": "eslint src",
+    "test": "npm run lint",
     "dev": "watchify src -o dist/app.js -t babelify -p browserify-hmr -d -v & npm start & wait"
   },
   "dependencies": {
