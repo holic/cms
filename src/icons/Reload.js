@@ -1,6 +1,9 @@
 import React from 'react'
 import classNames from 'classnames'
 
+// Open Iconic
+// https://github.com/iconic/open-iconic
+
 export default function ReloadIcon (props) {
   return (
     <svg viewBox="0 0 8 8" {...props} className={classNames(props.className, 'icon')}>

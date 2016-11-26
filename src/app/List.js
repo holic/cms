@@ -5,7 +5,7 @@ import pluralize from 'pluralize'
 import { database } from '../firebase'
 import { map, capitalize } from '../utils'
 import * as models from '../models'
-import { CogIcon, LoadingIcon } from '../icons'
+import { PencilIcon, LoadingIcon } from '../icons'
 
 const modelsByProperty = {}
 
@@ -92,7 +92,7 @@ export default class List extends Component {
                     ))}
                     <td>
                       <Link to={`/content/${this.state.model.property}/${id}`}>
-                        <CogIcon />
+                        <PencilIcon />
                       </Link>
                     </td>
                   </tr>
