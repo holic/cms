@@ -55,9 +55,9 @@ export default class Group extends Component {
 
   render () {
     return (
-      <fieldset className="form-group m-b-2">
+      <fieldset className="form-group mb-2">
         <label className="text-muted lead">{capitalize(this.props.label)}</label>
-        <div className="p-x-2 p-y-1">
+        <div className="px-2 py-1">
           {this.props.value && this.props.value.length ?
             this.props.value.map((item, i) => {
               const field = this.fieldFromItem(item)

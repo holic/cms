@@ -75,7 +75,7 @@ export default class Image extends Component {
 
     return (
       <div>
-        <label htmlFor="upload-input" className="btn btn-primary m-b-0">Upload an image</label>
+        <label htmlFor="upload-input" className="btn btn-primary mb-0">Upload an image</label>
         <input id="upload-input" className="hidden-xs-up" type="file" accept="image/*" onChange={this.uploadImage} />
       </div>
     )
@@ -85,7 +85,7 @@ export default class Image extends Component {
     return (
       <div className="row">
         <div className="col-sm-10 col-md-8 col-lg-6">
-          <div className="card card-inverse m-b-0">
+          <div className="card card-inverse mb-0">
             <img className="card-img img-fluid" src={this.props.value} />
             <div className="card-img-overlay">
               <p className="card-text text-xs-right">
@@ -100,7 +100,7 @@ export default class Image extends Component {
 
   render () {
     return (
-      <fieldset className="form-group m-b-2">
+      <fieldset className="form-group mb-2">
         <label className="text-muted">{capitalize(this.props.label)}</label>
         {this.props.value ? this.renderValue() : this.renderInput()}
       </fieldset>

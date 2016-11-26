@@ -69,7 +69,7 @@ export default class Reference extends Component {
 
   render () {
     return (
-      <fieldset className="form-group m-b-2">
+      <fieldset className="form-group mb-2">
         <label className="text-muted">{capitalize(this.props.label)}</label>
         {this.state.isLoading ?
           <p className="form-control-static">
