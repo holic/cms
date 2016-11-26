@@ -72,9 +72,9 @@ export default class Reference extends Component {
       <fieldset className="form-group mb-2">
         <label className="text-muted">{capitalize(this.props.label)}</label>
         {this.state.isLoading ?
-          <p className="form-control-static">
+          <div className="form-control-static form-control-lg">
             <LoadingIcon />
-          </p>
+          </div>
         : null}
         {!this.state.isLoading ?
           <select className="form-control form-control-lg" value={this.props.value == null ? '' : this.props.value} onChange={this.onChange}>
