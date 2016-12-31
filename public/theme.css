@@ -29,3 +29,7 @@ body {
     bottom: 0;
   }
 }
+
+.text-monospace {
+  font-family: Menlo,Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}

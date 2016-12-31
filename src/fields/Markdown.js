@@ -15,6 +15,7 @@ export default class Markdown extends Component {
       <fieldset className="form-group mb-2">
         <label className="text-muted">{capitalize(this.props.label)}</label>
         <textarea className="form-control form-control-lg" rows="8" value={this.props.value == null ? '' : this.props.value} onChange={this.onChange} />
+        <small className="form-text text-muted">{this.props.description}</small>
       </fieldset>
     )
   }
