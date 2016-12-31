@@ -57,7 +57,7 @@ export default class Group extends Component {
     return (
       <fieldset className="form-group mb-2">
         <label className="text-muted lead">{capitalize(this.props.label)}</label>
-        <div className="px-2 py-1">
+        <div className="pl-3 py-1">
           {this.props.value && this.props.value.length ?
             this.props.value.map((item, i) => {
               const field = this.fieldFromItem(item)
@@ -71,14 +71,14 @@ export default class Group extends Component {
             })
           : null}
 
-          {this.props.types.map((field, i) => (
-            <span key={i}>
-              <button type="button" className="btn btn-secondary btn-sm" onClick={this.addItem(field)}>
+          <label className="text-muted">Add a&hellip;</label>
+          <div className="btn-list">
+            {this.props.types.map((field, i) => (
+              <button key={i} type="button" className="btn btn-secondary btn-sm" onClick={this.addItem(field)}>
                 {capitalize(field.label)}
               </button>
-              {' '}
-            </span>
-          ))}
+            ))}
+          </div>
         </div>
       </fieldset>
     )

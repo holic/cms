@@ -33,3 +33,10 @@ body {
 .text-monospace {
   font-family: Menlo,Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
+
+.btn-list {
+  margin: -.2em;
+}
+.btn-list .btn {
+  margin: .2em;
+}
