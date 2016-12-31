@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 import pluralize from 'pluralize'
 import { map, capitalize } from '../utils'
 import * as models from '../models'
+import * as settings from '../models/settings'
 
 export default class Nav extends Component {
   render () {
@@ -18,16 +19,16 @@ export default class Nav extends Component {
             ))}
           </ul>
         </div>
-        {/*
         <div className="mt-3">
           <h6 className="mx-1 text-muted text-uppercase"><small>Settings</small></h6>
           <ul className="nav nav-pills nav-stacked">
-            <li className="nav-item">
-              <a className="nav-link" href="#">Content types</a>
-            </li>
+            {map(settings, (key, setting) => (
+              <li key={key} className="nav-item">
+                <Link to={`/settings/${setting.property}`} className="nav-link" activeClassName="active">{capitalize(pluralize(setting.label))}</Link>
+              </li>
+            ))}
           </ul>
         </div>
-        */}
       </div>
     )
   }

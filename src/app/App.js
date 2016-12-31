@@ -3,6 +3,7 @@ import { Router, Route, IndexRoute, IndexRedirect, Link, browserHistory } from '
 
 import Layout from './Layout'
 import List from './List'
+import ListSettings from './ListSettings'
 import Edit from './Edit'
 import * as models from '../models'
 
@@ -17,6 +18,10 @@ export default function App () {
         <IndexRedirect to={`/content/${firstModel.property}`} />
         <Route path="content/:model">
           <IndexRoute component={List} />
+          <Route path=":id" component={Edit} />
+        </Route>
+        <Route path="settings/:setting">
+          <IndexRoute component={ListSettings} />
           <Route path=":id" component={Edit} />
         </Route>
       </Route>

@@ -15,22 +15,30 @@ map(models, (key, model) => {
 
 
 export default class List extends Component {
-  componentWillMount () {
-    const model = modelsByProperty[this.props.params.model]
+  getModelConfig (params) {
+    return modelsByProperty[params.model]
+  }
+  getModelRef (ref) {
+    return database.ref(`data/${ref}`)
+  }
+  getModelPath (property) {
+    return `/content/${property}`
+  }
 
+  componentWillMount () {
+    const model = this.getModelConfig(this.props.params)
     this.loadEntries(model)
   }
 
   componentWillReceiveProps (nextProps) {
-    if (nextProps.params.model !== this.props.params.model) {
-      const model = modelsByProperty[nextProps.params.model]
-
-      this.loadEntries(model)
+    const nextModel = this.getModelConfig(nextProps.params)
+    if (nextModel !== this.getModelConfig(this.props.params)) {
+      this.loadEntries(nextModel)
     }
   }
 
   loadEntries (model) {
-    const ref = database.ref(`data/${model.property}`)
+    const ref = this.getModelRef(model.property)
 
     this.setState({
       model: model,
@@ -59,7 +67,7 @@ export default class List extends Component {
       <DocumentTitle title={capitalize(pluralize(this.state.model.label))}>
         <div>
           <p className="text-sm-right">
-            <Link to={`/content/${this.state.model.property}/new`} className="btn btn-secondary">
+            <Link to={`${this.getModelPath(this.state.model.property)}/new`} className="btn btn-secondary">
               New {this.state.model.label}
             </Link>
           </p>
@@ -91,7 +99,7 @@ export default class List extends Component {
                       <td key={i}>{entry[field.property]}</td>
                     ))}
                     <td>
-                      <Link to={`/content/${this.state.model.property}/${id}`}>
+                      <Link to={`${this.getModelPath(this.state.model.property)}/${id}`}>
                         <PencilIcon />
                       </Link>
                     </td>
