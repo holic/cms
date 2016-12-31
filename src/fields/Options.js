@@ -15,7 +15,7 @@ export default class Options extends Component {
       <fieldset className="form-group mb-2">
         <label className="text-muted">{capitalize(this.props.label)}</label>
         <select className="form-control form-control-lg" value={this.props.value == null ? '' : this.props.value} onChange={this.onChange}>
-          {/*<option value="" disabled></option>*/}
+          <option value="" disabled></option>
           {this.props.options.map((option) => (
             <option key={option.value} value={option.value}>{capitalize(option.label)}</option>
           ))}

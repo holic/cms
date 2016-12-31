@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router'
+import { database } from '../firebase'
 import Edit from './Edit'
 import { map } from '../utils'
 import * as settings from '../models/settings'
@@ -13,8 +14,11 @@ export default class EditSettings extends Edit {
   getModelConfig (params) {
     return settingsByProperty[params.setting]
   }
-  getModelPath (property) {
-    return `/settings/${property}`
+  getModelRef (ref) {
+    return database.ref(`config/${ref}`)
+  }
+  getModelPath (params) {
+    return `/settings/${params.setting}`
   }
 }
 

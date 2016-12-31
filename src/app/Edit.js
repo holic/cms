@@ -21,8 +21,8 @@ export default class Edit extends Component {
   getModelRef (ref) {
     return database.ref(`data/${ref}`)
   }
-  getModelPath (property) {
-    return `/content/${property}`
+  getModelPath (params) {
+    return `/content/${params.model}`
   }
 
   componentWillMount () {
@@ -74,7 +74,8 @@ export default class Edit extends Component {
     })
 
     ref.off('value')
-    ref.once('value', snapshot => {
+    ref.once('value', (snapshot) => {
+      // TODO: redirect when not found
       this.setState({
         isLoading: false,
         hasUnsavedChanges: false,
@@ -111,7 +112,7 @@ export default class Edit extends Component {
     this.setState({
       hasUnsavedChanges: false,
     }, () => {
-      this.props.router.push(this.getModelPath(props.params.model))
+      this.props.router.push(this.getModelPath(this.props.params))
     })
   }
 
@@ -125,7 +126,7 @@ export default class Edit extends Component {
       this.setState({
         hasUnsavedChanges: false,
       }, () => {
-        this.props.router.push(this.getModelPath(this.props.params.model))
+        this.props.router.push(this.getModelPath(this.props.params))
       })
     }
   }

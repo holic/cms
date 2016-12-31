@@ -42,14 +42,14 @@ export default class List extends Component {
 
     this.setState({
       model: model,
-      listedFields: model.fields.filter(field => field.listed),
+      listedFields: model.fields.filter((field) => field.listed),
       ref: ref,
       isLoading: true,
       entries: null,
     })
 
     ref.off('value')
-    ref.once('value', snapshot => {
+    ref.once('value', (snapshot) => {
       this.setState({
         isLoading: false,
         entries: snapshot.val()
