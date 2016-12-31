@@ -14,9 +14,19 @@ map(models, (key, model) => {
 })
 
 
-class Edit extends Component {
+export default class Edit extends Component {
+  getModelConfig (params) {
+    return modelsByProperty[params.model]
+  }
+  getModelRef (ref) {
+    return database.ref(`data/${ref}`)
+  }
+  getModelPath (property) {
+    return `/content/${property}`
+  }
+
   componentWillMount () {
-    const model = modelsByProperty[this.props.params.model]
+    const model = this.getModelConfig(this.props.params)
     const { id } = this.props.params
 
     this.loadEntry(model, id)
@@ -31,11 +41,12 @@ class Edit extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (nextProps.params.model !== this.props.params.model || nextProps.params.id !== this.props.params.id) {
-      const model = modelsByProperty[nextProps.params.model]
-      const { id } = nextProps.props.params
+    const model = this.getModelConfig(this.props.params)
+    const nextModel = this.getModelConfig(nextProps.params)
 
-      this.loadEntry(model, id)
+    if (nextModel !== model || nextProps.params.id !== this.props.params.id) {
+      const { id } = nextProps.props.params
+      this.loadEntry(nextModel, id)
     }
   }
 
@@ -52,7 +63,7 @@ class Edit extends Component {
       return
     }
 
-    const ref = database.ref(`data/${model.property}/${id}`)
+    const ref = this.getModelRef(`${model.property}/${id}`)
 
     this.setState({
       model: model,
@@ -94,13 +105,13 @@ class Edit extends Component {
       this.state.ref.set(this.state.entry)
     }
     else {
-      database.ref(`data/${this.state.model.property}`).push(this.state.entry)
+      this.getModelRef(`${this.state.model.property}`).push(this.state.entry)
     }
 
     this.setState({
       hasUnsavedChanges: false,
     }, () => {
-      this.props.router.push(`/content/${this.props.params.model}`)
+      this.props.router.push(this.getModelPath(props.params.model))
     })
   }
 
@@ -114,7 +125,7 @@ class Edit extends Component {
       this.setState({
         hasUnsavedChanges: false,
       }, () => {
-        this.props.router.push(`/content/${this.props.params.model}`)
+        this.props.router.push(this.getModelPath(this.props.params.model))
       })
     }
   }
@@ -155,4 +166,4 @@ class Edit extends Component {
   }
 }
 
-export default withRouter(Edit)
+export const EditWithRouter = withRouter(Edit)

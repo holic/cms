@@ -4,7 +4,8 @@ import { Router, Route, IndexRoute, IndexRedirect, Link, browserHistory } from '
 import Layout from './Layout'
 import List from './List'
 import ListSettings from './ListSettings'
-import Edit from './Edit'
+import { EditWithRouter } from './Edit'
+import { EditSettingsWithRouter } from './EditSettings'
 import * as models from '../models'
 
 // TODO: make sure we're routing to a valid model, otherwise redirect
@@ -18,11 +19,11 @@ export default function App () {
         <IndexRedirect to={`/content/${firstModel.property}`} />
         <Route path="content/:model">
           <IndexRoute component={List} />
-          <Route path=":id" component={Edit} />
+          <Route path=":id" component={EditWithRouter} />
         </Route>
         <Route path="settings/:setting">
           <IndexRoute component={ListSettings} />
-          <Route path=":id" component={Edit} />
+          <Route path=":id" component={EditSettingsWithRouter} />
         </Route>
       </Route>
     </Router>
