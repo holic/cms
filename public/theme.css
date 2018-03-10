@@ -1,10 +1,11 @@
 html,
-body {
-  height: 100%;
-}
+body,
 #app {
+  height: 100vh;
+}
+
+.minh-100 {
   min-height: 100%;
-  position: relative;
 }
 
 .icon {

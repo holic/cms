@@ -1,18 +1,25 @@
-import React from 'react'
-import { Router, Route, IndexRoute, IndexRedirect, Link, browserHistory } from 'react-router'
+import React from "react";
+import {
+  Router,
+  Route,
+  IndexRoute,
+  IndexRedirect,
+  Link,
+  browserHistory
+} from "react-router";
 
-import Layout from './Layout'
-import List from './List'
-import ListSettings from './ListSettings'
-import { EditWithRouter } from './Edit'
-import { EditSettingsWithRouter } from './EditSettings'
-import * as models from '../models'
+import Layout from "./Layout";
+import List from "./List";
+import ListSettings from "./ListSettings";
+import { EditWithRouter } from "./Edit";
+import { EditSettingsWithRouter } from "./EditSettings";
+import * as models from "../models";
 
 // TODO: make sure we're routing to a valid model, otherwise redirect
 
-const firstModel = models[Object.keys(models)[0]]
+const firstModel = models[Object.keys(models)[0]];
 
-export default function App () {
+export default function App() {
   return (
     <Router history={browserHistory}>
       <Route path="/" component={Layout}>
@@ -27,5 +34,5 @@ export default function App () {
         </Route>
       </Route>
     </Router>
-  )
+  );
 }

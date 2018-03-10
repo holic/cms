@@ -1,25 +1,25 @@
-import React, { Component } from 'react'
-import { withRouter } from 'react-router'
-import { database } from '../firebase'
-import Edit from './Edit'
-import { map } from '../utils'
-import * as settings from '../models/settings'
+import React, { Component } from "react";
+import { withRouter } from "react-router";
+import { database } from "../firebase";
+import Edit from "./Edit";
+import { map } from "../utils";
+import * as settings from "../models/settings";
 
-const settingsByProperty = {}
+const settingsByProperty = {};
 map(settings, (key, setting) => {
-  settingsByProperty[setting.property] = setting
-})
+  settingsByProperty[setting.property] = setting;
+});
 
 export default class EditSettings extends Edit {
-  getModelConfig (params) {
-    return settingsByProperty[params.setting]
+  getModelConfig(params) {
+    return settingsByProperty[params.setting];
   }
-  getModelRef (ref) {
-    return database.ref(`config/${ref}`)
+  getModelRef(ref) {
+    return database.ref(`config/${ref}`);
   }
-  getModelPath (params) {
-    return `/settings/${params.setting}`
+  getModelPath(params) {
+    return `/settings/${params.setting}`;
   }
 }
 
-export const EditSettingsWithRouter = withRouter(EditSettings)
+export const EditSettingsWithRouter = withRouter(EditSettings);

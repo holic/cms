@@ -1,90 +1,96 @@
-import React, { Component } from 'react'
-import { Link } from 'react-router'
-import { database } from '../firebase'
-import { map, capitalize } from '../utils'
-import * as models from '../models'
-import { LoadingIcon } from '../icons'
+import React, { Component } from "react";
+import { Link } from "react-router";
+import { database } from "../firebase";
+import { map, capitalize } from "../utils";
+import * as models from "../models";
+import { LoadingIcon } from "../icons";
 
-const modelsByProperty = {}
+const modelsByProperty = {};
 
 map(models, (key, model) => {
-  modelsByProperty[model.property] = model
-})
+  modelsByProperty[model.property] = model;
+});
 
 // TODO: prop types
 
 export default class Reference extends Component {
-  componentWillMount () {
-    const model = modelsByProperty[this.props.model]
+  componentWillMount() {
+    const model = modelsByProperty[this.props.model];
 
-    this.loadOptions(model)
+    this.loadOptions(model);
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (nextProps.model !== this.props.model) {
-      const model = modelsByProperty[nextProps.model]
+      const model = modelsByProperty[nextProps.model];
 
-      this.loadOptions(model)
+      this.loadOptions(model);
     }
   }
 
-  loadOptions (model) {
-    const ref = database.ref(`data/${model.property}`)
+  loadOptions(model) {
+    const ref = database.ref(`data/${model.property}`);
 
     this.setState({
       model: model,
       ref: ref,
       isLoading: true,
-      options: null,
-    })
+      options: null
+    });
 
-    ref.off('value')
-    ref.once('value', snapshot => {
-      const options = []
+    ref.off("value");
+    ref.once("value", snapshot => {
+      const options = [];
       snapshot.forEach(child => {
-        const value = child.val()
+        const value = child.val();
         options.push({
           value: child.ref.toString(),
           // TODO: make `name` property configurable
-          text: value[this.props.ref_label_property],
-        })
-      })
+          text: value[this.props.ref_label_property]
+        });
+      });
       this.setState({
         isLoading: false,
-        options: options,
-      })
-    })
+        options: options
+      });
+    });
   }
 
-  componentWillUnmount () {
-    const { ref } = this.state
-    if (ref) ref.off('value')
+  componentWillUnmount() {
+    const { ref } = this.state;
+    if (ref) ref.off("value");
   }
 
-  onChange = (event) => {
+  onChange = event => {
     if (this.props.onChange) {
-      this.props.onChange(event.target.value === '' ? null : event.target.value)
+      this.props.onChange(
+        event.target.value === "" ? null : event.target.value
+      );
     }
-  }
+  };
 
-  render () {
+  render() {
     return (
-      <fieldset className="form-group mb-2">
+      <fieldset className="form-group mb-4">
         <label className="text-muted">{capitalize(this.props.label)}</label>
-        {this.state.isLoading ?
-          <div className="form-control-static form-control-lg">
-            <LoadingIcon />
-          </div>
-        : null}
-        {!this.state.isLoading ?
-          <select className="form-control form-control-lg" value={this.props.value == null ? '' : this.props.value} onChange={this.onChange}>
-            <option value=""></option>
-            {map(this.state.options, (i, option) => (
-              <option key={i} value={option.value}>{option.text}</option>
-            ))}
-          </select>
-        : null}
+        {this.state.isLoading
+          ? <div className="form-control-static form-control-lg">
+              <LoadingIcon />
+            </div>
+          : null}
+        {!this.state.isLoading
+          ? <select
+              className="form-control form-control-lg"
+              value={this.props.value == null ? "" : this.props.value}
+              onChange={this.onChange}
+            >
+              <option value="" />
+              {map(this.state.options, (i, option) => (
+                <option key={i} value={option.value}>{option.text}</option>
+              ))}
+            </select>
+          : null}
       </fieldset>
-    )
+    );
   }
 }
