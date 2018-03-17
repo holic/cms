@@ -2,17 +2,18 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title></title>
+  <title>Loading&hellip;</title>
 
-  <link rel="stylesheet" href="https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/css/bootstrap.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <style>
     html,
-    body {
-      height: 100%;
-    }
+    body,
     #app {
+      height: 100vh;
+    }
+
+    .minh-100 {
       min-height: 100%;
-      position: relative;
     }
 
     .icon {
@@ -28,11 +29,31 @@
     @-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
     @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
     @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+
+
+    @media (min-width: 544px) {
+      .sidebar-sm {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+      }
+    }
+
+    .text-monospace {
+      font-family: Menlo,Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    .btn-list {
+      margin: -.2em;
+    }
+    .btn-list .btn {
+      margin: .2em;
+    }
   </style>
 </head>
 <body>
   <div id="app"></div>
 
-  <script src="/static/bundle.js"></script>
+  <script src="./src/index.js"></script>
 </body>
 </html>
