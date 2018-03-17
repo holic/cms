@@ -1,98 +1,29 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { withRouter } from "react-router";
+import { connect } from "react-firebase";
 import DocumentTitle from "react-document-title";
-import { database } from "../firebase";
-import { map } from "../utils";
-import * as models from "../models";
 import * as fields from "../fields";
 import { LoadingIcon } from "../icons";
 
-const modelsByProperty = {};
-
-map(models, (key, model) => {
-  modelsByProperty[model.property] = model;
-});
-
-export default class Edit extends Component {
-  getModelConfig(params) {
-    return modelsByProperty[params.model];
-  }
-  getModelRef(ref) {
-    return database.ref(`data/${ref}`);
-  }
-  getModelPath(params) {
-    return `/content/${params.model}`;
-  }
-
-  componentWillMount() {
-    const model = this.getModelConfig(this.props.params);
-    const { id } = this.props.params;
-
-    this.loadEntry(model, id);
-  }
+class Edit extends Component {
+  state = {
+    hasUnsavedChanges: false,
+    changes: {}
+  };
 
   componentDidMount() {
-    this.props.router.setRouteLeaveHook(this.props.route, () => {
+    this.props.router.setRouteLeaveHook(this.props.routes.slice(-1)[0], () => {
       if (this.state.hasUnsavedChanges) {
         return "You have unsaved changes.\nLeaving this page will discard these changes.";
       }
     });
   }
 
-  componentWillReceiveProps(nextProps) {
-    const model = this.getModelConfig(this.props.params);
-    const nextModel = this.getModelConfig(nextProps.params);
-
-    if (nextModel !== model || nextProps.params.id !== this.props.params.id) {
-      const { id } = nextProps.props.params;
-      this.loadEntry(nextModel, id);
-    }
-  }
-
-  loadEntry(model, id) {
-    if (id === "new") {
-      this.setState({
-        model: model,
-        id: id,
-        ref: null,
-        isLoading: false,
-        hasUnsavedChanges: false,
-        entry: {}
-      });
-      return;
-    }
-
-    const ref = this.getModelRef(`${model.property}/${id}`);
-
-    this.setState({
-      model: model,
-      id: id,
-      ref: ref,
-      isLoading: true,
-      entry: null
-    });
-
-    ref.off("value");
-    ref.once("value", snapshot => {
-      // TODO: redirect when not found
-      this.setState({
-        isLoading: false,
-        hasUnsavedChanges: false,
-        entry: snapshot.val()
-      });
-    });
-  }
-
-  componentWillUnmount() {
-    const { ref } = this.state;
-    if (ref) ref.off("value");
-  }
-
   setProperty(property, value) {
     this.setState({
       hasUnsavedChanges: true,
-      entry: {
-        ...this.state.entry,
+      changes: {
+        ...this.state.changes,
         [property]: value
       }
     });
@@ -101,42 +32,45 @@ export default class Edit extends Component {
   saveEntry = event => {
     event.preventDefault();
 
-    if (this.state.ref) {
-      this.state.ref.set(this.state.entry);
-    } else {
-      this.getModelRef(`${this.state.model.property}`).push(this.state.entry);
-    }
+    // TODO: only send changes through
+    this.props.saveEntry({
+      ...this.props.entry,
+      ...this.state.changes
+    });
 
     this.setState(
       {
         hasUnsavedChanges: false
       },
       () => {
-        this.props.router.push(this.getModelPath(this.props.params));
+        this.props.router.push(this.props.url);
       }
     );
   };
 
   deleteEntry = event => {
-    // No ref to delete? This should only happen when this is a new entry.
-    if (!this.state.ref) return;
+    if (!this.props.deleteEntry) return;
 
     if (window.confirm("This cannot be undone. Continue?")) {
-      this.state.ref.remove();
+      this.props.deleteEntry();
 
       this.setState(
         {
           hasUnsavedChanges: false
         },
         () => {
-          this.props.router.push(this.getModelPath(this.props.params));
+          this.props.router.push(this.props.url);
         }
       );
     }
   };
 
   renderContent() {
-    if (this.state.isLoading) {
+    const { id, entry, model } = this.props;
+    const { hasUnsavedChanges, changes } = this.state;
+    const isLoading = id && entry == null;
+
+    if (isLoading) {
       return (
         <p className="text-muted">
           <LoadingIcon />
@@ -145,15 +79,19 @@ export default class Edit extends Component {
     }
 
     return (
-      <div>
+      <Fragment>
         <form onSubmit={this.saveEntry}>
-          {this.state.model.fields.map((field, i) => {
+          {model.fields.map((field, i) => {
             const Field = fields[field.type] || fields.text;
             return (
               <Field
                 key={i}
                 {...field}
-                value={this.state.entry[field.property]}
+                value={
+                  changes.hasOwnProperty(field.property)
+                    ? changes[field.property]
+                    : entry && entry[field.property]
+                }
                 onChange={this.setProperty.bind(this, field.property)}
               />
             );
@@ -161,39 +99,45 @@ export default class Edit extends Component {
           <button
             type="submit"
             className="btn btn-primary btn-lg"
-            disabled={!this.state.hasUnsavedChanges}
+            disabled={!hasUnsavedChanges}
           >
             Save
           </button>
         </form>
-        {this.state.ref
+        {this.props.deleteEntry
           ? <p className="text-sm-right mt-4">
               <button
                 type="button"
                 className="btn btn-link text-muted"
                 onClick={this.deleteEntry}
               >
-                Delete this {this.state.model.label}
+                Delete this {model.label}
               </button>
             </p>
           : null}
-      </div>
+      </Fragment>
     );
   }
 
   render() {
+    const { id, model } = this.props;
     return (
-      <DocumentTitle
-        title={
-          this.state.ref
-            ? `Edit ${this.state.model.label}`
-            : `New ${this.state.model.label}`
-        }
-      >
+      <DocumentTitle title={id ? `Edit ${model.label}` : `New ${model.label}`}>
         {this.renderContent()}
       </DocumentTitle>
     );
   }
 }
 
-export const EditWithRouter = withRouter(Edit);
+const mapFirebaseToProps = (props, ref, firebase) => ({
+  entry: props.id ? `${props.firebaseRef}/${props.id}` : null,
+  saveEntry: entry =>
+    props.id
+      ? ref(`${props.firebaseRef}/${props.id}`).set(entry)
+      : ref(props.firebaseRef).push(entry),
+  deleteEntry: props.id
+    ? () => ref(`${props.firebaseRef}/${props.id}`).remove()
+    : null
+});
+
+export default withRouter(connect(mapFirebaseToProps)(Edit));

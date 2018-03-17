@@ -3,7 +3,7 @@ import Firebase from "firebase";
 // TODO: set up security rules, can use `now` to validate `ServerValue.TIMESTAMP`
 // https://github.com/webhook/webhook-server-open/blob/master/security.json
 
-Firebase.initializeApp({
+export const app = Firebase.initializeApp({
   apiKey: "AIzaSyBj-oXS2n_jnrTg6Hzj9eD4CFYGDXLVZQg",
   authDomain: "entries.firebaseapp.com",
   databaseURL: "https://entries.firebaseio.com",
