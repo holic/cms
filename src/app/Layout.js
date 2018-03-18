@@ -1,6 +1,12 @@
 import React from "react";
 import DocumentTitle from "react-document-title";
+import { Route, Redirect, Switch } from "react-router-dom";
 import Nav from "./Nav";
+import Entries from "./Entries";
+import Settings from "./Settings";
+import * as models from "../models";
+
+const firstModel = models[Object.keys(models)[0]];
 
 export default function Layout({ children }) {
   return (
@@ -13,7 +19,11 @@ export default function Layout({ children }) {
         </div>
         <div className="col">
           <div className="p-4">
-            {children}
+            <Switch>
+              <Route path="/content/:model" component={Entries} />
+              <Route path="/settings/:model" component={Settings} />
+              <Redirect to={`/content/${firstModel.property}`} />
+            </Switch>
           </div>
         </div>
       </div>

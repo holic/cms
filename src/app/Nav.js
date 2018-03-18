@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Link } from "react-router";
+import { NavLink } from "react-router-dom";
 import pluralize from "pluralize";
 import { map, capitalize } from "../utils";
 import * as models from "../models";
@@ -15,13 +15,13 @@ export default function Nav() {
         <ul className="nav nav-pills flex-column">
           {map(models, (key, model) => (
             <li key={key} className="nav-item">
-              <Link
+              <NavLink
                 to={`/content/${model.property}`}
                 className="nav-link"
                 activeClassName="active"
               >
                 {capitalize(pluralize(model.label))}
-              </Link>
+              </NavLink>
             </li>
           ))}
         </ul>
@@ -33,13 +33,13 @@ export default function Nav() {
         <ul className="nav nav-pills flex-column">
           {map(settings, (key, setting) => (
             <li key={key} className="nav-item">
-              <Link
+              <NavLink
                 to={`/settings/${setting.property}`}
                 className="nav-link"
                 activeClassName="active"
               >
                 {capitalize(pluralize(setting.label))}
-              </Link>
+              </NavLink>
             </li>
           ))}
         </ul>

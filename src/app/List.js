@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import DocumentTitle from "react-document-title";
 import pluralize from "pluralize";
 import { map, capitalize } from "../utils";
@@ -14,7 +14,7 @@ function List({ model, url, entries }) {
     <DocumentTitle title={capitalize(pluralize(model.label))}>
       <Fragment>
         <p className="text-sm-right">
-          <Link to={`${url}/new`} className="btn btn-outline-secondary">
+          <Link to={url()} className="btn btn-outline-secondary">
             New {model.label}
           </Link>
         </p>
@@ -46,7 +46,7 @@ function List({ model, url, entries }) {
                       <td key={i}>{entry[field.property]}</td>
                     ))}
                     <td>
-                      <Link to={`${url}/${id}`}>
+                      <Link to={url(id)}>
                         <PencilIcon />
                       </Link>
                     </td>
@@ -61,7 +61,7 @@ function List({ model, url, entries }) {
 }
 
 const mapFirebaseToProps = (props, ref, firebase) => ({
-  entries: props.firebaseRef
+  entries: `${props.firebaseRef}/${props.model.property}`
 });
 
 export default connect(mapFirebaseToProps)(List);

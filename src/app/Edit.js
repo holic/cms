@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { withRouter } from "react-router";
+import { Prompt } from "react-router-dom";
 import { connect } from "react-firebase";
 import DocumentTitle from "react-document-title";
 import * as fields from "../fields";
@@ -10,14 +10,6 @@ class Edit extends Component {
     hasUnsavedChanges: false,
     changes: {}
   };
-
-  componentDidMount() {
-    this.props.router.setRouteLeaveHook(this.props.routes.slice(-1)[0], () => {
-      if (this.state.hasUnsavedChanges) {
-        return "You have unsaved changes.\nLeaving this page will discard these changes.";
-      }
-    });
-  }
 
   setProperty(property, value) {
     this.setState({
@@ -38,30 +30,17 @@ class Edit extends Component {
       ...this.state.changes
     });
 
-    this.setState(
-      {
-        hasUnsavedChanges: false
-      },
-      () => {
-        this.props.router.push(this.props.url);
-      }
-    );
+    this.setState({ hasUnsavedChanges: false }, this.props.backToList);
   };
 
   deleteEntry = event => {
+    event.preventDefault();
     if (!this.props.deleteEntry) return;
 
+    // TODO: migrate to Prompt?
     if (window.confirm("This cannot be undone. Continue?")) {
       this.props.deleteEntry();
-
-      this.setState(
-        {
-          hasUnsavedChanges: false
-        },
-        () => {
-          this.props.router.push(this.props.url);
-        }
-      );
+      this.setState({ hasUnsavedChanges: false }, this.props.backToList);
     }
   };
 
@@ -81,6 +60,11 @@ class Edit extends Component {
     return (
       <Fragment>
         <form onSubmit={this.saveEntry}>
+          <Prompt
+            when={hasUnsavedChanges}
+            message="You have unsaved changes. Leaving this page will discard these changes."
+          />
+
           {model.fields.map((field, i) => {
             const Field = fields[field.type] || fields.text;
             return (
@@ -108,7 +92,7 @@ class Edit extends Component {
           ? <p className="text-sm-right mt-4">
               <button
                 type="button"
-                className="btn btn-link text-muted"
+                className="btn btn-link text-danger"
                 onClick={this.deleteEntry}
               >
                 Delete this {model.label}
@@ -130,14 +114,19 @@ class Edit extends Component {
 }
 
 const mapFirebaseToProps = (props, ref, firebase) => ({
-  entry: props.id ? `${props.firebaseRef}/${props.id}` : null,
+  entry: props.id
+    ? `${props.firebaseRef}/${props.model.property}/${props.id}`
+    : null,
   saveEntry: entry =>
     props.id
-      ? ref(`${props.firebaseRef}/${props.id}`).set(entry)
-      : ref(props.firebaseRef).push(entry),
+      ? ref(`${props.firebaseRef}/${props.model.property}/${props.id}`).set(
+          entry
+        )
+      : ref(`${props.firebaseRef}/${props.model.property}`).push(entry),
   deleteEntry: props.id
-    ? () => ref(`${props.firebaseRef}/${props.id}`).remove()
+    ? () =>
+        ref(`${props.firebaseRef}/${props.model.property}/${props.id}`).remove()
     : null
 });
 
-export default withRouter(connect(mapFirebaseToProps)(Edit));
+export default connect(mapFirebaseToProps)(Edit);
