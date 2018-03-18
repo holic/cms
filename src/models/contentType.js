@@ -33,9 +33,9 @@ export default {
       listed: true
     },
     {
-      label: "configuration",
+      label: "fields configuration",
       property: "config",
-      type: "code",
+      type: "json",
       required: true
     }
   ]

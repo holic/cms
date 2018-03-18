@@ -5,5 +5,6 @@ import { default as image } from "./Image";
 import { default as group } from "./Group";
 import { default as code } from "./Code";
 import { default as options } from "./Options";
+import { default as json } from "./Json";
 
-export { text, markdown, ref, image, group, code, options };
+export { text, markdown, ref, image, group, code, options, json };
