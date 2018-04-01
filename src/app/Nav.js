@@ -14,19 +14,17 @@ export default class Nav extends PureComponent {
             <small>Content</small>
           </h6>
           <ul className="nav nav-pills flex-column">
-            {contentTypes
-              ? contentTypes.map(model => (
-                  <li key={model.property} className="nav-item">
-                    <NavLink
-                      to={`/content/${model.property}`}
-                      className="nav-link"
-                      activeClassName="active"
-                    >
-                      {capitalize(pluralize(model.label))}
-                    </NavLink>
-                  </li>
-                ))
-              : null}
+            {contentTypes.map(model => (
+              <li key={model.property} className="nav-item">
+                <NavLink
+                  to={`/content/${model.property}`}
+                  className="nav-link"
+                  activeClassName="active"
+                >
+                  {capitalize(pluralize(model.label))}
+                </NavLink>
+              </li>
+            ))}
           </ul>
         </div>
         <div className="mt-5">
