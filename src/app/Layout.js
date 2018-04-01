@@ -14,23 +14,18 @@ class Layout extends PureComponent {
     const { contentTypes } = this.props;
     return (
       <DocumentTitle title="CMS">
-        <div className="row no-gutters minh-100">
-          <div className="col-sm-4 col-md-3 col-xl-2 bg-light">
-            <div className="p-4">
-              <ContentTypes>
-                {types => (
-                  <Nav
-                    contentTypesLoading={types.loading}
-                    contentTypes={types.value}
-                  />
-                )}
-              </ContentTypes>
-            </div>
-          </div>
-          <div className="col">
-            <div className="p-4">
-              <ContentTypes>
-                {types => (
+        <ContentTypes>
+          {types => (
+            <div className="row no-gutters minh-100">
+              <div className="col-sm-4 col-md-3 col-xl-2 bg-light">
+                <div className="p-4">
+                  {types.loading
+                    ? <span className="text-muted"><LoadingIcon /></span>
+                    : <Nav contentTypes={types.value} />}
+                </div>
+              </div>
+              <div className="col">
+                <div className="p-4">
                   <Switch>
                     <Route path="/settings/:model" component={Settings} />
                     <Route
@@ -43,11 +38,11 @@ class Layout extends PureComponent {
                       ? <Redirect to={`/content/${types.value[0].property}`} />
                       : null}
                   </Switch>
-                )}
-              </ContentTypes>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+          )}
+        </ContentTypes>
       </DocumentTitle>
     );
   }
