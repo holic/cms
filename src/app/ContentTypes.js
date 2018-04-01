@@ -20,10 +20,12 @@ const mergeProps = (ownProps, firebaseProps) => ({
   ...ownProps,
   loading: !firebaseProps.contentTypes,
   ready: !!firebaseProps.contentTypes,
-  value: Object.values(firebaseProps.contentTypes || {}).map(model => ({
-    ...model,
-    fields: model.config ? JSON.parse(model.config) : []
-  }))
+  value: Object.values(firebaseProps.contentTypes || {})
+    .map(model => ({
+      ...model,
+      fields: model.config ? JSON.parse(model.config) : []
+    }))
+    .filter(model => model.fields.length > 0)
 });
 
 export default connect(mapFirebaseToProps, mergeProps)(ContentTypes);
