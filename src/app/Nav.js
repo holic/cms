@@ -4,10 +4,11 @@ import pluralize from "pluralize";
 import { map, capitalize } from "../utils";
 import { LoadingIcon } from "../icons";
 import * as settings from "../models/settings";
+import classNames from "classnames";
 
 export default class Nav extends PureComponent {
   render() {
-    const { contentTypes } = this.props;
+    const { contentTypes, contentTypesLoading } = this.props;
     return (
       <Fragment>
         <div className="mt-2">
@@ -15,8 +16,19 @@ export default class Nav extends PureComponent {
             <small>Content</small>
           </h6>
           <ul className="nav nav-pills flex-column">
-            {contentTypes
-              ? contentTypes.map(model => (
+            {contentTypesLoading
+              ? [0, 1, 2].map((item, i) => (
+                  <li className="nav-item">
+                    <a
+                      href="#"
+                      className={classNames("nav-link", { active: i === 0 })}
+                      onClick={event => event.preventDefault()}
+                    >
+                      …
+                    </a>
+                  </li>
+                ))
+              : contentTypes.map(model => (
                   <li key={model.property} className="nav-item">
                     <NavLink
                       to={`/content/${model.property}`}
@@ -26,10 +38,7 @@ export default class Nav extends PureComponent {
                       {capitalize(pluralize(model.label))}
                     </NavLink>
                   </li>
-                ))
-              : <li className="nav-item">
-                  <a className="nav-link text-muted"><LoadingIcon /></a>
-                </li>}
+                ))}
           </ul>
         </div>
         <div className="mt-5">

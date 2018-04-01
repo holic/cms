@@ -7,6 +7,7 @@ import Entries from "./Entries";
 import Settings from "./Settings";
 import * as settings from "../models/settings";
 import ContentTypes from "./ContentTypes";
+import { LoadingIcon } from "../icons";
 
 class Layout extends PureComponent {
   render() {
@@ -17,7 +18,12 @@ class Layout extends PureComponent {
           <div className="col-sm-4 col-md-3 col-xl-2 bg-light">
             <div className="p-4">
               <ContentTypes>
-                {types => <Nav contentTypes={types.value} />}
+                {types => (
+                  <Nav
+                    contentTypesLoading={types.loading}
+                    contentTypes={types.value}
+                  />
+                )}
               </ContentTypes>
             </div>
           </div>
