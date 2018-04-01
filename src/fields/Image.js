@@ -6,13 +6,9 @@ import { capitalize } from "../utils";
 // TODO: prop types
 
 export default class Image extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isUploading: false
-    };
-  }
+  state = {
+    isUploading: false
+  };
 
   removeImage = event => {
     if (this.props.onChange) {

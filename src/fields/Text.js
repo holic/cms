@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import { capitalize } from "../utils";
 
 // TODO: prop types
@@ -12,7 +12,7 @@ const inputType = type => {
   }
 };
 
-export default class Text extends Component {
+export default class Text extends PureComponent {
   onChange = event => {
     if (this.props.onChange) {
       this.props.onChange(

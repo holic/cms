@@ -1,12 +1,14 @@
-import React from "react";
+import React, { PureComponent } from "react";
 import ReloadIcon from "./Reload";
 import classNames from "classnames";
 
-export default function LoadingIcon(props) {
-  return (
-    <ReloadIcon
-      {...props}
-      className={classNames("icon-spin", props.className)}
-    />
-  );
+export default class LoadingIcon extends PureComponent {
+  render() {
+    return (
+      <ReloadIcon
+        {...this.props}
+        className={classNames("icon-spin", this.props.className)}
+      />
+    );
+  }
 }

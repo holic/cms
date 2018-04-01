@@ -1,46 +1,55 @@
-import React from "react";
+import React, { PureComponent } from "react";
 import { Route, Redirect, Switch } from "react-router-dom";
 import List from "./List";
 import Edit from "./Edit";
 import { map } from "../utils";
-import * as models from "../models";
 
-const modelsByProperty = {};
-map(models, (key, model) => {
-  modelsByProperty[model.property] = model;
-});
+export default class Entries extends PureComponent {
+  render() {
+    const { match, history, contentTypes } = this.props;
 
-export default function Entries({ match, history }) {
-  const model = modelsByProperty[match.params.model];
-  if (!model) {
-    // TODO: Link to settings instead of just redirecting?
-    return <Redirect to="/" />;
+    if (!contentTypes) {
+      return <div />;
+    }
+
+    const modelsByProperty = {};
+    contentTypes.map(model => {
+      modelsByProperty[model.property] = model;
+    });
+
+    const model = modelsByProperty[match.params.model];
+    if (!model) {
+      // TODO: Link to settings instead of just redirecting?
+      return <Redirect to="/" />;
+    }
+
+    return (
+      <Switch>
+        <Route
+          exact
+          path={match.url}
+          render={() => (
+            <List
+              model={model}
+              firebaseRef="data"
+              url={id => `${match.url}/${id || "new"}`}
+            />
+          )}
+        />
+        <Route
+          path={`${match.url}/:id`}
+          render={props => (
+            <Edit
+              model={model}
+              firebaseRef="data"
+              id={
+                props.match.params.id === "new" ? null : props.match.params.id
+              }
+              backToList={() => history.push(match.url)}
+            />
+          )}
+        />
+      </Switch>
+    );
   }
-
-  return (
-    <Switch>
-      <Route
-        exact
-        path={match.url}
-        render={() => (
-          <List
-            model={model}
-            firebaseRef="data"
-            url={id => `${match.url}/${id || "new"}`}
-          />
-        )}
-      />
-      <Route
-        path={`${match.url}/:id`}
-        render={props => (
-          <Edit
-            model={model}
-            firebaseRef="data"
-            id={props.match.params.id === "new" ? null : props.match.params.id}
-            backToList={() => history.push(match.url)}
-          />
-        )}
-      />
-    </Switch>
-  );
 }

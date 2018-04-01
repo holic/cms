@@ -1,11 +1,11 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import { database } from "../firebase";
 import * as fields from "../fields";
 import { capitalize } from "../utils";
 
 // TODO: prop types
 
-export default class Group extends Component {
+export default class Group extends PureComponent {
   addItem(field) {
     return event => {
       const items = this.props.value || [];

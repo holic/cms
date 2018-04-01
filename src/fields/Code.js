@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import { capitalize } from "../utils";
 
 // TODO: prop types
 
-export default class Code extends Component {
+export default class Code extends PureComponent {
   onChange = event => {
     if (this.props.onChange) {
       this.props.onChange(
