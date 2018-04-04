@@ -4,10 +4,10 @@ import Firebase from "firebase";
 // https://github.com/webhook/webhook-server-open/blob/master/security.json
 
 export const app = Firebase.initializeApp({
-  apiKey: "AIzaSyBj-oXS2n_jnrTg6Hzj9eD4CFYGDXLVZQg",
-  authDomain: "entries.firebaseapp.com",
-  databaseURL: "https://entries.firebaseio.com",
-  storageBucket: "project-164560165500119978.appspot.com"
+  apiKey: process.env.FIREBASE_API_KEY,
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+  databaseURL: process.env.FIREBASE_DATABASE_URL,
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET
 });
 
 export const auth = Firebase.auth();
