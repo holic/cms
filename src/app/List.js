@@ -5,12 +5,12 @@ import pluralize from "pluralize";
 import { map, capitalize } from "../utils";
 import { PencilIcon, LoadingIcon } from "../icons";
 import { connect } from "react-firebase";
+import Firebase from "./Firebase";
 
 class List extends PureComponent {
   render() {
-    const { model, url, entries } = this.props;
+    const { model, url, firebaseRef } = this.props;
     const listedFields = model.fields.filter(field => field.listed);
-    const isLoading = !("entries" in this.props);
 
     return (
       <DocumentTitle title={capitalize(pluralize(model.label))}>
@@ -30,19 +30,26 @@ class List extends PureComponent {
               </tr>
             </thead>
 
-            {isLoading
-              ? <tfoot>
-                  <tr>
-                    <td
-                      colSpan={listedFields.length + 1}
-                      className="text-muted"
-                    >
-                      <LoadingIcon />
-                    </td>
-                  </tr>
-                </tfoot>
-              : !entries
-                  ? <tfoot>
+            <Firebase path={`${firebaseRef}/${model.property}`}>
+              {(entries, isLoading) => {
+                if (isLoading) {
+                  return (
+                    <tfoot>
+                      <tr>
+                        <td
+                          colSpan={listedFields.length + 1}
+                          className="text-muted"
+                        >
+                          <LoadingIcon />
+                        </td>
+                      </tr>
+                    </tfoot>
+                  );
+                }
+
+                if (!entries) {
+                  return (
+                    <tfoot>
                       <tr>
                         <td
                           colSpan={listedFields.length + 1}
@@ -62,20 +69,27 @@ class List extends PureComponent {
                         </td>
                       </tr>
                     </tfoot>
-                  : <tbody>
-                      {map(entries, (id, entry) => (
-                        <tr key={id}>
-                          {listedFields.map((field, i) => (
-                            <td key={i}>{entry[field.property]}</td>
-                          ))}
-                          <td>
-                            <Link to={url(id)}>
-                              <PencilIcon />
-                            </Link>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>}
+                  );
+                }
+
+                return (
+                  <tbody>
+                    {map(entries, (id, entry) => (
+                      <tr key={id}>
+                        {listedFields.map((field, i) => (
+                          <td key={i}>{entry[field.property]}</td>
+                        ))}
+                        <td>
+                          <Link to={url(id)}>
+                            <PencilIcon />
+                          </Link>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                );
+              }}
+            </Firebase>
           </table>
         </Fragment>
       </DocumentTitle>
@@ -83,8 +97,4 @@ class List extends PureComponent {
   }
 }
 
-const mapFirebaseToProps = (props, ref, firebase) => ({
-  entries: `${props.firebaseRef}/${props.model.property}`
-});
-
-export default connect(mapFirebaseToProps)(List);
+export default List;
