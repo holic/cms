@@ -8,9 +8,9 @@
     "classnames": "^2.2.6",
     "firebase": "^4.13.1",
     "pluralize": "^7.0.0",
-    "react": "^16.6.0",
+    "react": "^16.7.0-alpha.0",
     "react-document-title": "^2.0.3",
-    "react-dom": "^16.6.0",
+    "react-dom": "^16.7.0-alpha.0",
     "react-firebase": "^2.2.8",
     "react-router-dom": "^4.3.1"
   },
