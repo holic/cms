@@ -1,100 +1,76 @@
-import React, { Fragment, PureComponent } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import DocumentTitle from "react-document-title";
 import pluralize from "pluralize";
 import { map, capitalize } from "../utils";
 import { PencilIcon, LoadingIcon } from "../icons";
-import { connect } from "react-firebase";
-import Firebase from "./Firebase";
+import useFirebase from "../useFirebase";
 
-class List extends PureComponent {
-  render() {
-    const { model, url, firebaseRef } = this.props;
-    const listedFields = model.fields.filter(field => field.listed);
+const List = ({ model, url, firebaseRef }) => {
+  const listedFields = model.fields.filter(field => field.listed);
+  const [entries] = useFirebase(`${firebaseRef}/${model.property}`);
 
-    return (
-      <DocumentTitle title={capitalize(pluralize(model.label))}>
-        <Fragment>
-          <p className="text-sm-right">
-            <Link to={url()} className="btn btn-outline-secondary">
-              New {model.label}
-            </Link>
-          </p>
-          <table className="table table-hover">
-            <thead>
+  return (
+    <DocumentTitle title={capitalize(pluralize(model.label))}>
+      <React.Fragment>
+        <p className="text-sm-right">
+          <Link to={url()} className="btn btn-outline-secondary">
+            New {model.label}
+          </Link>
+        </p>
+        <table className="table table-hover">
+          <thead>
+            <tr>
+              {listedFields.map((field, i) => (
+                <th key={i}>{capitalize(field.label)}</th>
+              ))}
+              <th width="1" />
+            </tr>
+          </thead>
+
+          {!entries ? (
+            <tfoot>
               <tr>
-                {listedFields.map((field, i) => (
-                  <th key={i}>{capitalize(field.label)}</th>
-                ))}
-                <th width="1" />
+                <td colSpan={listedFields.length + 1} className="text-muted">
+                  <LoadingIcon />
+                </td>
               </tr>
-            </thead>
+            </tfoot>
+          ) : null}
 
-            <Firebase path={`${firebaseRef}/${model.property}`}>
-              {(entries, isLoading) => {
-                if (isLoading) {
-                  return (
-                    <tfoot>
-                      <tr>
-                        <td
-                          colSpan={listedFields.length + 1}
-                          className="text-muted"
-                        >
-                          <LoadingIcon />
-                        </td>
-                      </tr>
-                    </tfoot>
-                  );
-                }
+          {entries && !entries.val() ? (
+            <tfoot>
+              <tr>
+                <td colSpan={listedFields.length + 1} className="text-muted">
+                  <em>
+                    You haven't created any {pluralize(model.label)} yet.{" "}
+                    <Link to={url()}>Create your first {model.label}?</Link>
+                  </em>
+                </td>
+              </tr>
+            </tfoot>
+          ) : null}
 
-                if (!entries) {
-                  return (
-                    <tfoot>
-                      <tr>
-                        <td
-                          colSpan={listedFields.length + 1}
-                          className="text-muted"
-                        >
-                          <em>
-                            You haven't created any
-                            {" "}
-                            {pluralize(model.label)}
-                            {" "}
-                            yet.
-                            {" "}
-                            <Link to={url()}>
-                              Create your first {model.label}?
-                            </Link>
-                          </em>
-                        </td>
-                      </tr>
-                    </tfoot>
-                  );
-                }
+          {entries && entries.val() ? (
+            <tbody>
+              {map(entries.val(), (id, entry) => (
+                <tr key={id}>
+                  {listedFields.map((field, i) => (
+                    <td key={i}>{entry[field.property]}</td>
+                  ))}
+                  <td>
+                    <Link to={url(id)}>
+                      <PencilIcon />
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          ) : null}
+        </table>
+      </React.Fragment>
+    </DocumentTitle>
+  );
+};
 
-                return (
-                  <tbody>
-                    {map(entries, (id, entry) => (
-                      <tr key={id}>
-                        {listedFields.map((field, i) => (
-                          <td key={i}>{entry[field.property]}</td>
-                        ))}
-                        <td>
-                          <Link to={url(id)}>
-                            <PencilIcon />
-                          </Link>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                );
-              }}
-            </Firebase>
-          </table>
-        </Fragment>
-      </DocumentTitle>
-    );
-  }
-}
-
-export default List;
+export default React.memo(List);
