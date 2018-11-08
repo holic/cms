@@ -6,7 +6,8 @@ export default {
     {
       label: "property",
       property: "property",
-      description: "Lowercase, plural slug using underscores, e.g. `content_types`",
+      description:
+        "Lowercase, plural slug using underscores, e.g. `content_types`",
       type: "text",
       required: true,
       listed: true
@@ -32,11 +33,13 @@ export default {
       required: true,
       listed: true
     },
+    // TODO: move this to a group of fields
     {
       label: "fields configuration",
       property: "config",
       type: "json",
       required: true
     }
+    // TODO: add sort field
   ]
 };
