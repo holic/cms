@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { database } from "./firebase";
 
-const useFirebase = path => {
+const useFirebase = (path, options = {}) => {
   const [snapshot, setSnapshot] = useState(null);
 
   const ref = database.ref(path);
@@ -9,8 +9,12 @@ const useFirebase = path => {
 
   useEffect(
     () => {
-      ref.on("value", snapshot => setSnapshot(snapshot));
-      return () => ref.off();
+      let query = ref;
+      if (options.orderByChild) {
+        query = query.orderByChild(options.orderByChild);
+      }
+      query.on("value", snapshot => setSnapshot(snapshot));
+      return () => query.off();
     },
     [path]
   );
