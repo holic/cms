@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { Route, Redirect, Switch } from "react-router-dom";
 import Nav from "./Nav";
 import Entries from "./Entries";
@@ -28,7 +28,10 @@ const Layout = () => {
         <div className="p-4">
           {contentTypes.ready ? (
             <Switch>
-              <Route path="/settings/:model" component={Settings} />
+              <Route
+                path="/settings/:model"
+                render={props => <Settings {...props} />}
+              />
               <Route
                 path="/content/:model"
                 render={props => (
