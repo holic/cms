@@ -49,7 +49,7 @@ export default class Group extends PureComponent {
   }
 
   fieldFromItem(item) {
-    return this.props.types.filter(field => field.name === item.type)[0];
+    return this.props.types.find(field => field.name === item.type);
   }
 
   render() {
