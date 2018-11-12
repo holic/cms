@@ -6,7 +6,7 @@ import { map } from "../utils";
 
 export default class Entries extends PureComponent {
   render() {
-    const { match, history, contentTypes } = this.props;
+    const { match, contentTypes } = this.props;
 
     if (!contentTypes) {
       return <div />;
@@ -40,12 +40,12 @@ export default class Entries extends PureComponent {
           path={`${match.url}/:id`}
           render={props => (
             <Edit
+              parentUrl={match.url}
               model={model}
               firebaseRef="data"
               id={
                 props.match.params.id === "new" ? null : props.match.params.id
               }
-              backToList={() => history.push(match.url)}
             />
           )}
         />

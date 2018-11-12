@@ -1,132 +1,107 @@
-import React, { Component, Fragment } from "react";
-import { Prompt } from "react-router-dom";
-import { connect } from "react-firebase";
-import DocumentTitle from "react-document-title";
+import React, { useState } from "react";
+import { Prompt, Redirect } from "react-router-dom";
 import * as fields from "../fields";
 import { LoadingIcon } from "../icons";
+import useDocumentTitle from "../useDocumentTitle";
+import { database } from "../firebase";
+import useFirebaseValue from "../useFirebaseValue";
 
-class Edit extends Component {
-  state = {
+const Edit = ({ id, model, firebaseRef, parentUrl }) => {
+  useDocumentTitle(id ? `Edit ${model.label}` : `New ${model.label}`);
+
+  const [state, setState] = useState({
     hasUnsavedChanges: false,
-    changes: {}
-  };
-
-  setProperty(property, value) {
-    this.setState({
+    changes: {},
+    hasSaved: false
+  });
+  const setProperty = (property, value) =>
+    setState({
       hasUnsavedChanges: true,
       changes: {
-        ...this.state.changes,
+        ...state.changes,
         [property]: value
       }
     });
+
+  const ref = id
+    ? database.ref(`${firebaseRef}/${model.property}/${id}`)
+    : database.ref(`${firebaseRef}/${model.property}`).push();
+
+  const entrySnapshot = useFirebaseValue(ref, [id]);
+
+  if (!entrySnapshot) {
+    return (
+      <p className="text-muted">
+        <LoadingIcon />
+      </p>
+    );
   }
 
-  saveEntry = event => {
+  const entry = entrySnapshot.val();
+
+  const saveEntry = event => {
     event.preventDefault();
-
-    // TODO: only send changes through
-    this.props.saveEntry({
-      ...this.props.entry,
-      ...this.state.changes
+    ref.set({
+      ...(entry || {}),
+      ...state.changes
     });
-
-    this.setState({ hasUnsavedChanges: false }, this.props.backToList);
+    setState({ hasUnsavedChanges: false, changes: {}, hasSaved: true });
   };
 
-  deleteEntry = event => {
+  const deleteEntry = event => {
     event.preventDefault();
-    if (!this.props.deleteEntry) return;
-
     // TODO: migrate to Prompt?
     if (window.confirm("This cannot be undone. Continue?")) {
-      this.props.deleteEntry();
-      this.setState({ hasUnsavedChanges: false }, this.props.backToList);
+      ref.remove();
+      setState({ hasUnsavedChanges: false, changes: {}, hasSaved: true });
     }
   };
 
-  renderContent() {
-    const { id, entry, model } = this.props;
-    const { hasUnsavedChanges, changes } = this.state;
-    const isLoading = id && entry == null;
+  return (
+    <>
+      <form onSubmit={saveEntry}>
+        {state.hasSaved ? <Redirect to={parentUrl} /> : null}
+        <Prompt
+          when={state.hasUnsavedChanges}
+          message="You have unsaved changes. Leaving this page will discard these changes."
+        />
 
-    if (isLoading) {
-      return (
-        <p className="text-muted">
-          <LoadingIcon />
-        </p>
-      );
-    }
-
-    return (
-      <Fragment>
-        <form onSubmit={this.saveEntry}>
-          <Prompt
-            when={hasUnsavedChanges}
-            message="You have unsaved changes. Leaving this page will discard these changes."
-          />
-
-          {model.fields.map((field, i) => {
-            const Field = fields[field.type] || fields.text;
-            return (
-              <Field
-                key={i}
-                {...field}
-                value={
-                  changes.hasOwnProperty(field.property)
-                    ? changes[field.property]
-                    : entry && entry[field.property]
-                }
-                onChange={this.setProperty.bind(this, field.property)}
-              />
-            );
-          })}
+        {model.fields.map((field, i) => {
+          const Field = fields[field.type] || fields.text;
+          return (
+            <Field
+              key={i}
+              {...field}
+              value={
+                state.changes.hasOwnProperty(field.property)
+                  ? state.changes[field.property]
+                  : entry && entry[field.property]
+              }
+              onChange={setProperty.bind(null, field.property)}
+            />
+          );
+        })}
+        <button
+          type="submit"
+          className="btn btn-primary btn-lg"
+          disabled={!state.hasUnsavedChanges}
+        >
+          Save
+        </button>
+      </form>
+      {id ? (
+        <p className="text-sm-right mt-4">
           <button
-            type="submit"
-            className="btn btn-primary btn-lg"
-            disabled={!hasUnsavedChanges}
+            type="button"
+            className="btn btn-link text-danger"
+            onClick={deleteEntry}
           >
-            Save
+            Delete this {model.label}
           </button>
-        </form>
-        {this.props.deleteEntry
-          ? <p className="text-sm-right mt-4">
-              <button
-                type="button"
-                className="btn btn-link text-danger"
-                onClick={this.deleteEntry}
-              >
-                Delete this {model.label}
-              </button>
-            </p>
-          : null}
-      </Fragment>
-    );
-  }
+        </p>
+      ) : null}
+    </>
+  );
+};
 
-  render() {
-    const { id, model } = this.props;
-    return (
-      <DocumentTitle title={id ? `Edit ${model.label}` : `New ${model.label}`}>
-        {this.renderContent()}
-      </DocumentTitle>
-    );
-  }
-}
-
-const mapFirebaseToProps = (props, ref, firebase) => ({
-  entry: props.id
-    ? `${props.firebaseRef}/${props.model.property}/${props.id}`
-    : null,
-  saveEntry: entry =>
-    props.id
-      ? ref(`${props.firebaseRef}/${props.model.property}/${props.id}`).set(
-          entry
-        )
-      : ref(`${props.firebaseRef}/${props.model.property}`).push(entry),
-  deleteEntry: props.id
-    ? () =>
-        ref(`${props.firebaseRef}/${props.model.property}/${props.id}`).remove()
-    : null
-});
-
-export default connect(mapFirebaseToProps)(Edit);
+export default React.memo(Edit);
