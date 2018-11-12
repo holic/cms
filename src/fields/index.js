@@ -6,5 +6,28 @@ import { default as group } from "./Group";
 import { default as code } from "./Code";
 import { default as options } from "./Options";
 import { default as json } from "./Json";
+import { default as contentFieldSettings } from "./ContentFieldSettings";
 
-export { text, markdown, ref, image, group, code, options, json };
+export {
+  text,
+  markdown,
+  ref,
+  image,
+  group,
+  code,
+  options,
+  json,
+  contentFieldSettings
+};
+
+export default Object.keys({
+  text,
+  markdown,
+  ref,
+  image,
+  group,
+  code,
+  options,
+  json,
+  contentFieldSettings
+});

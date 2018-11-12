@@ -69,6 +69,7 @@ const Edit = ({ id, model, firebaseRef, parentUrl }) => {
 
         {model.fields.map((field, i) => {
           const Field = fields[field.type] || fields.text;
+          const migrate = field.migrate || (value => value);
           return (
             <Field
               key={i}
@@ -76,7 +77,7 @@ const Edit = ({ id, model, firebaseRef, parentUrl }) => {
               value={
                 state.changes.hasOwnProperty(field.property)
                   ? state.changes[field.property]
-                  : entry && entry[field.property]
+                  : entry && migrate(entry[field.property])
               }
               onChange={setProperty.bind(null, field.property)}
             />

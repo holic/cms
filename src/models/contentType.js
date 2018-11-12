@@ -39,6 +39,34 @@ export default {
       property: "config",
       type: "json",
       required: true
+    },
+    {
+      label: "fields configuration",
+      property: "config",
+      type: "group",
+      types: [
+        {
+          label: "field",
+          name: "field",
+          type: "contentFieldSettings"
+        }
+      ],
+      migrate: value => {
+        try {
+          const items = JSON.parse(value);
+          return items.map(item => ({
+            type: "contentFieldSettings",
+            value: item
+          }));
+        } catch (e) {}
+
+        return value;
+      }
+    },
+    {
+      label: "field",
+      property: "__field",
+      type: "contentFieldSettings"
     }
     // TODO: add sort field
   ]
