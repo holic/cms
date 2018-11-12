@@ -16,6 +16,7 @@ const Edit = ({ id, model, firebaseRef, parentUrl }) => {
   });
   const setProperty = (property, value) =>
     setState({
+      ...state,
       hasUnsavedChanges: true,
       changes: {
         ...state.changes,
@@ -27,7 +28,7 @@ const Edit = ({ id, model, firebaseRef, parentUrl }) => {
     ? database.ref(`${firebaseRef}/${model.property}/${id}`)
     : database.ref(`${firebaseRef}/${model.property}`).push();
 
-  const entrySnapshot = useFirebaseValue(ref, [id]);
+  const entrySnapshot = useFirebaseValue(ref);
 
   if (!entrySnapshot) {
     return (

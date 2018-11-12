@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 
-const useFirebaseValue = (query, dependencies = []) => {
+const useFirebaseValue = query => {
   const [snapshot, setSnapshot] = useState(null);
 
   useEffect(() => {
     if (!query) return;
     query.on("value", snapshot => setSnapshot(snapshot));
     return () => query.off();
-  }, dependencies);
+  }, query ? [query.toString()] : []);
 
   return snapshot;
 };

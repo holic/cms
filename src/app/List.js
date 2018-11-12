@@ -4,12 +4,15 @@ import pluralize from "pluralize";
 import { map, capitalize } from "../utils";
 import { PencilIcon, LoadingIcon } from "../icons";
 import useDocumentTitle from "../useDocumentTitle";
-import useFirebase from "../useFirebase";
+import { database } from "../firebase";
+import useFirebaseValue from "../useFirebaseValue";
 
 const List = ({ model, url, firebaseRef }) => {
   useDocumentTitle(capitalize(pluralize(model.label)));
+  const entries = useFirebaseValue(
+    database.ref(`${firebaseRef}/${model.property}`)
+  );
   const listedFields = model.fields.filter(field => field.listed);
-  const [entries] = useFirebase(`${firebaseRef}/${model.property}`);
 
   return (
     <React.Fragment>

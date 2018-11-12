@@ -1,13 +1,13 @@
-import useFirebase from "./useFirebase";
 import * as settings from "./models/settings";
 import orderedChildren from "./orderedChildren";
+import { database } from "./firebase";
+import useFirebaseValue from "./useFirebaseValue";
 
 const useContentTypes = () => {
-  const [contentTypes] = useFirebase(
-    `config/${settings.contentType.property}`,
-    {
-      orderByChild: "label"
-    }
+  const contentTypes = useFirebaseValue(
+    database
+      .ref(`config/${settings.contentType.property}`)
+      .orderByChild("label")
   );
 
   return {
