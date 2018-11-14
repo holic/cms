@@ -4,9 +4,12 @@
   "scripts": {
     "start": "parcel index.html"
   },
+  "engines": {
+    "node": "8.x"
+  },
   "dependencies": {
     "classnames": "^2.2.6",
-    "firebase": "^4.13.1",
+    "firebase": "^5.5.8",
     "pluralize": "^7.0.0",
     "react": "^16.7.0-alpha.0",
     "react-document-title": "^2.0.3",

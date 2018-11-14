@@ -1,4 +1,7 @@
-import Firebase from "firebase";
+import Firebase from "firebase/app";
+import "firebase/auth";
+import "firebase/database";
+import "firebase/storage";
 
 // TODO: set up security rules, can use `now` to validate `ServerValue.TIMESTAMP`
 // https://github.com/webhook/webhook-server-open/blob/master/security.json
