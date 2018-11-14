@@ -17,7 +17,7 @@ export default class Options extends PureComponent {
       <fieldset className="form-group mb-4">
         <label className="text-muted">{capitalize(this.props.label)}</label>
         <select
-          className="form-control form-control-lg custom-select"
+          className="form-control form-control-lg"
           value={this.props.value == null ? "" : this.props.value}
           onChange={this.onChange}
         >
