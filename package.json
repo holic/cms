@@ -5,7 +5,7 @@
     "start": "parcel index.html"
   },
   "engines": {
-    "node": "10.x"
+    "node": "12.x"
   },
   "dependencies": {
     "classnames": "^2.2.6",
