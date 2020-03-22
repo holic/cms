@@ -12,7 +12,7 @@ const Layout = () => {
   const contentTypes = useContentTypes();
 
   return (
-    <div className="row no-gutters minh-100">
+    <div className="row no-gutters min-vh-100">
       <div className="col-sm-4 col-md-3 col-xl-2 bg-light">
         <div className="p-4">
           {contentTypes.loading ? (

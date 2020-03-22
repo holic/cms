@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-const container = document.getElementById("app");
+const container = document.getElementById("react-root");
 
 const render = () => {
   const App = require("./app/App").default;
